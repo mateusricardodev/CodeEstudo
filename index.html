@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CronoEstudo – Painel do Estudante</title>
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Google Fonts: DM Sans + DM Serif Display -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Serif+Display&display=swap" rel="stylesheet" />
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════
+       SIDEBAR
+  ══════════════════════════════════════════ -->
+  <aside class="sidebar" id="sidebar">
+    <!-- Logo -->
+    <div class="sidebar__logo">
+      <a href="index.html" class="sidebar__logo-link">
+        <img src="logo.svg" alt="CronoEstudo" class="sidebar__logo-img" />
+      </a>
+    </div>
+
+    <!-- Toggle para mobile -->
+    <button class="sidebar__close" id="sidebarClose" aria-label="Fechar menu">
+      <i data-lucide="x"></i>
+    </button>
+
+    <!-- Navigation -->
+    <nav class="sidebar__nav">
+      <ul class="sidebar__list">
+        <li class="sidebar__item sidebar__item--active">
+          <a href="index.html" class="sidebar__link" data-label="Dashboard">
+            <i data-lucide="layout-dashboard"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li class="sidebar__item">
+          <a href="cronogramas.html" class="sidebar__link" data-label="Cronogramas">
+            <i data-lucide="calendar-days"></i>
+            <span>Meus Cronogramas</span>
+          </a>
+        </li>
+
+        <!-- Disciplinas com submenu -->
+        <li class="sidebar__item sidebar__item--has-sub" id="disciplinasToggle">
+          <a href="disciplinas.html" class="sidebar__link sidebar__link--toggle" data-label="Disciplinas">
+            <i data-lucide="book-open"></i>
+            <span>Disciplinas</span>
+            <i data-lucide="chevron-down" class="sidebar__chevron"></i>
+          </a>
+          <ul class="sidebar__sublist" id="disciplinasSub">
+            <li class="sidebar__subitem sidebar__subitem--active">
+              <a href="#" class="sidebar__sublink">Matemática</a>
+            </li>
+            <li class="sidebar__subitem">
+              <a href="#" class="sidebar__sublink">História</a>
+            </li>
+            <li class="sidebar__subitem">
+              <a href="#" class="sidebar__sublink">Biologia</a>
+            </li>
+            <li class="sidebar__subitem">
+              <a href="#" class="sidebar__sublink">Redação</a>
+            </li>
+            <li class="sidebar__subitem">
+              <a href="#" class="sidebar__sublink">Física</a>
+            </li>
+            <li class="sidebar__subitem">
+              <a href="#" class="sidebar__sublink">Química</a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="sidebar__item">
+          <a href="flashcards.html" class="sidebar__link" data-label="Flashcards">
+            <i data-lucide="layers"></i>
+            <span>Flashcards</span>
+          </a>
+        </li>
+        <li class="sidebar__item">
+          <a href="questoes.html" class="sidebar__link" data-label="Questões">
+            <i data-lucide="help-circle"></i>
+            <span>Banco de Questões</span>
+          </a>
+        </li>
+        <li class="sidebar__item">
+          <a href="desempenho.html" class="sidebar__link" data-label="Desempenho">
+            <i data-lucide="bar-chart-2"></i>
+            <span>Desempenho</span>
+          </a>
+        </li>
+        <li class="sidebar__item">
+          <a href="anotacoes.html" class="sidebar__link" data-label="Anotações">
+            <i data-lucide="notebook-pen"></i>
+            <span>Anotações</span>
+          </a>
+        </li>
+        <li class="sidebar__item">
+          <a href="suporte.html" class="sidebar__link" data-label="Suporte">
+            <i data-lucide="life-buoy"></i>
+            <span>Suporte</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Planos -->
+    <div class="sidebar__plans">
+      <p class="sidebar__plans-label"><i data-lucide="graduation-cap"></i> Planos Pro</p>
+      <a href="#" class="sidebar__plan-item">
+        <i data-lucide="circle-dot"></i> 9º ano
+      </a>
+      <a href="#" class="sidebar__plan-item">
+        <i data-lucide="star"></i> Terceirão
+      </a>
+    </div>
+  </aside>
+
+  <!-- Overlay mobile -->
+  <div class="overlay" id="overlay"></div>
+
+  <!-- ══════════════════════════════════════════
+       MAIN WRAPPER
+  ══════════════════════════════════════════ -->
+  <div class="main-wrapper">
+
+    <!-- ══════════════════════════════════════
+         HEADER
+    ══════════════════════════════════════ -->
+    <header class="header">
+      <!-- Hamburger (mobile) -->
+      <button class="header__hamburger" id="hamburger" aria-label="Abrir menu">
+        <i data-lucide="menu"></i>
+      </button>
+
+      <!-- Nav central -->
+      <nav class="header__nav">
+        <a href="index.html" class="header__nav-link header__nav-link--active" data-label="Início">
+          <i data-lucide="home"></i> Início
+        </a>
+        <a href="cursos.html" class="header__nav-link" data-label="Cursos">
+          <i data-lucide="graduation-cap"></i> Cursos
+        </a>
+        <a href="calendario.html" class="header__nav-link" data-label="Calendário">
+          <i data-lucide="calendar"></i> Calendário
+        </a>
+        <a href="planos.html" class="header__nav-link" data-label="Planos de Curso">
+          <i data-lucide="sparkles"></i> Planos de Curso
+        </a>
+        <a href="comunidade.html" class="header__nav-link" data-label="Comunidade">
+          <i data-lucide="users"></i> Comunidade
+        </a>
+      </nav>
+
+      <!-- Busca + Perfil -->
+      <div class="header__right">
+        <div class="header__search">
+          <i data-lucide="search"></i>
+          <input type="text" placeholder="Pesquisar conteúdos, aulas..." />
+        </div>
+
+        <!-- Notificação -->
+        <button class="header__notification" aria-label="Notificações">
+          <i data-lucide="bell"></i>
+          <span class="header__badge">3</span>
+        </button>
+
+        <!-- Perfil -->
+        <div class="header__profile">
+          <div class="header__avatar">AS</div>
+          <div class="header__profile-info">
+            <span class="header__profile-name">Beatriz Gabriele</span>
+            <span class="header__profile-meta">
+              <i data-lucide="flame"></i> 25 dias · Nível 12
+            </span>
+          </div>
+          <i data-lucide="chevron-down"></i>
+        </div>
+      </div>
+    </header>
+
+    <!-- ══════════════════════════════════════
+         CONTENT
+    ══════════════════════════════════════ -->
+    <main class="content">
+
+      <!-- Saudação -->
+      <div class="content__greeting">
+        <p class="content__date">Hoje: Quinta-feira, 10 de Março de 2026</p>
+        <h1 class="content__title">Painel do Estudante — Olá, <span>Beatriz Gabriele!</span></h1>
+      </div>
+
+      <!-- ── SUMMARY CARDS ── -->
+      <section class="summary-cards">
+
+        <!-- Meta diária -->
+        <article class="summary-card summary-card--primary">
+          <div class="summary-card__header">
+            <span class="summary-card__label">Meta Diária</span>
+            <div class="summary-card__icon summary-card__icon--blue">
+              <i data-lucide="timer"></i>
+            </div>
+          </div>
+          <div class="summary-card__value">4h 15m <span>de 6h</span></div>
+          <div class="summary-card__progress-wrap">
+            <div class="summary-card__progress-bar">
+              <div class="summary-card__progress-fill" id="progressFill" style="width: 70%"></div>
+            </div>
+            <span class="summary-card__progress-pct" id="progressPct">70%</span>
+          </div>
+          <p class="summary-card__sub">Faltam 1h 45m para a meta!</p>
+        </article>
+
+        <!-- Disciplinas ativas -->
+        <article class="summary-card summary-card--teal">
+          <div class="summary-card__header">
+            <span class="summary-card__label">Disciplinas Ativas</span>
+            <div class="summary-card__icon summary-card__icon--teal">
+              <i data-lucide="layers"></i>
+            </div>
+          </div>
+          <div class="summary-card__value">6 <span>matérias</span></div>
+          <div class="summary-card__subjects">
+            <span class="badge badge--blue">Mat</span>
+            <span class="badge badge--green">His</span>
+            <span class="badge badge--purple">Bio</span>
+            <span class="badge badge--orange">Red</span>
+            <span class="badge badge--pink">Fís</span>
+            <span class="badge badge--cyan">Quí</span>
+          </div>
+        </article>
+
+        <!-- Simulados -->
+        <article class="summary-card summary-card--warm">
+          <div class="summary-card__header">
+            <span class="summary-card__label">Simulados</span>
+            <div class="summary-card__icon summary-card__icon--amber">
+              <i data-lucide="calendar-check"></i>
+            </div>
+          </div>
+          <div class="summary-card__value">Próximo:</div>
+          <div class="summary-card__date">15/10/2026</div>
+          <p class="summary-card__sub">Faltam 220 dias · ENEM Geral</p>
+        </article>
+
+        <!-- Streak -->
+        <article class="summary-card summary-card--purple">
+          <div class="summary-card__header">
+            <span class="summary-card__label">Streak de Estudos</span>
+            <div class="summary-card__icon summary-card__icon--purple">
+              <i data-lucide="sparkles"></i>
+            </div>
+          </div>
+          <div class="summary-card__value">6 dias</div>
+          <p class="summary-card__sub">Meta diária ativa e sequência de revisão mantida.</p>
+        </article>
+
+      </section>
+
+      <!-- ── GRID INFERIOR ── -->
+      <div class="dashboard-grid">
+
+        <!-- ── CRONOGRAMA ── -->
+        <section class="schedule-section">
+          <div class="schedule-section__header">
+            <h2 class="schedule-section__title">Meu Cronograma da Semana</h2>
+            <div class="schedule-section__controls">
+              <button class="btn-ghost" id="prevWeek"><i data-lucide="chevron-left"></i></button>
+              <span class="schedule-section__range" id="weekRange">Março 7–13</span>
+              <button class="btn-ghost" id="nextWeek"><i data-lucide="chevron-right"></i></button>
+              <button class="btn-outline">
+                <i data-lucide="calendar-days"></i> Calendar View
+              </button>
+            </div>
+          </div>
+
+          <!-- Grade dos dias -->
+          <div class="schedule-grid" id="scheduleGrid">
+            <!-- Gerado pelo JS -->
+          </div>
+        </section>
+
+        <!-- ── WIDGETS LATERAIS ── -->
+        <aside class="widgets">
+
+          <!-- Atividades de hoje -->
+          <div class="widget">
+            <div class="widget__header">
+              <h3 class="widget__title">Atividades de Hoje</h3>
+              <button class="btn-ghost btn-ghost--small"><i data-lucide="more-horizontal"></i></button>
+            </div>
+            <ul class="task-list" id="taskList">
+              <li class="task-list__item task-list__item--done">
+                <label class="task-list__label">
+                  <input type="checkbox" class="task-list__check" checked />
+                  <span class="task-list__checkmark"></span>
+                  <span class="task-list__text">Matemática: Álgebra</span>
+                </label>
+              </li>
+              <li class="task-list__item">
+                <label class="task-list__label">
+                  <input type="checkbox" class="task-list__check" />
+                  <span class="task-list__checkmark"></span>
+                  <span class="task-list__text">História: Brasil Império</span>
+                </label>
+              </li>
+              <li class="task-list__item">
+                <label class="task-list__label">
+                  <input type="checkbox" class="task-list__check" />
+                  <span class="task-list__checkmark"></span>
+                  <span class="task-list__text">Revisão: Redação</span>
+                </label>
+              </li>
+              <li class="task-list__item">
+                <label class="task-list__label">
+                  <input type="checkbox" class="task-list__check" />
+                  <span class="task-list__checkmark"></span>
+                  <span class="task-list__text">Biologia: Genética</span>
+                </label>
+              </li>
+              <li class="task-list__item">
+                <label class="task-list__label">
+                  <input type="checkbox" class="task-list__check" />
+                  <span class="task-list__checkmark"></span>
+                  <span class="task-list__text">Exercícios de Física</span>
+                </label>
+              </li>
+            </ul>
+            <!-- Progresso das tarefas -->
+            <div class="widget__progress">
+              <span id="taskProgress">1 de 5 concluídas</span>
+              <div class="widget__progress-bar">
+                <div class="widget__progress-fill" id="taskProgressFill" style="width:20%"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lembretes e Prazos -->
+          <div class="widget">
+            <div class="widget__header">
+              <h3 class="widget__title">Lembretes e Prazos</h3>
+            </div>
+            <ul class="reminder-list">
+              <li class="reminder-list__item">
+                <span class="reminder-list__dot reminder-list__dot--blue"></span>
+                <div class="reminder-list__info">
+                  <span class="reminder-list__name">Redação</span>
+                  <span class="reminder-list__tag">Entrega</span>
+                </div>
+                <span class="reminder-list__date">28/10/2026</span>
+              </li>
+              <li class="reminder-list__item">
+                <span class="reminder-list__dot reminder-list__dot--amber"></span>
+                <div class="reminder-list__info">
+                  <span class="reminder-list__name">Simulado</span>
+                  <span class="reminder-list__tag">Prova</span>
+                </div>
+                <span class="reminder-list__date">29/10/2026</span>
+              </li>
+              <li class="reminder-list__item">
+                <span class="reminder-list__dot reminder-list__dot--green"></span>
+                <div class="reminder-list__info">
+                  <span class="reminder-list__name">Lista de Química</span>
+                  <span class="reminder-list__tag">Exercício</span>
+                </div>
+                <span class="reminder-list__date">12/03/2026</span>
+              </li>
+              <li class="reminder-list__item">
+                <span class="reminder-list__dot reminder-list__dot--blue"></span>
+                <div class="reminder-list__info">
+                  <span class="reminder-list__name">Revisão Automática</span>
+                  <span class="reminder-list__tag">História</span>
+                </div>
+                <span class="reminder-list__date">Hoje</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Sugestão de Estudo -->
+          <div class="widget widget--suggestion">
+            <div class="widget__header">
+              <h3 class="widget__title">Sugestão de Estudo</h3>
+              <i data-lucide="info" class="widget__info-icon"></i>
+            </div>
+            <div class="suggestion">
+              <div class="suggestion__icon">
+                <i data-lucide="sparkles"></i>
+              </div>
+              <div class="suggestion__body">
+                <p class="suggestion__subject">Matemática: Probabilidade</p>
+                <p class="suggestion__reason">Baseado no seu histórico · 45 min recomendados</p>
+              </div>
+            </div>
+            <button class="btn-primary btn-primary--full" onclick="alert('Iniciando sessão de estudo!')">
+              <i data-lucide="play"></i> Iniciar sessão
+            </button>
+          </div>
+
+        </aside>
+      </div><!-- /dashboard-grid -->
+
+    </main>
+  </div><!-- /main-wrapper -->
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+

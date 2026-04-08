@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CronoEstudo – Planos de Curso</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Serif+Display&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+  <style>
+    /* ── Planos page – estilos específicos ── */
+
+    .plans-hero {
+      text-align: center;
+      padding: 20px 0 36px;
+    }
+    .plans-hero__eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--blue-50);
+      color: var(--blue-600);
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 99px;
+      border: 1px solid var(--blue-100);
+      margin-bottom: 16px;
+    }
+    .plans-hero__eyebrow svg { width: 13px; height: 13px; }
+
+    .plans-hero__title {
+      font-family: var(--font-display);
+      font-size: 2.4rem;
+      color: var(--gray-900);
+      font-weight: 400;
+      letter-spacing: -.025em;
+      line-height: 1.1;
+      margin-bottom: 14px;
+    }
+    .plans-hero__title span { color: var(--blue-600); }
+
+    .plans-hero__subtitle {
+      font-size: .95rem;
+      color: var(--gray-500);
+      max-width: 520px;
+      margin: 0 auto 28px;
+      line-height: 1.7;
+    }
+
+    .plans-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 0;
+      background: var(--gray-100);
+      border: 1px solid var(--gray-200);
+      border-radius: 99px;
+      padding: 4px;
+    }
+    .plans-toggle__btn {
+      padding: 7px 20px;
+      border-radius: 99px;
+      font-size: .83rem;
+      font-weight: 600;
+      color: var(--gray-500);
+      transition: background var(--transition), color var(--transition), box-shadow var(--transition);
+    }
+    .plans-toggle__btn--active {
+      background: var(--white);
+      color: var(--blue-600);
+      box-shadow: 0 1px 4px rgba(0,0,0,.1);
+    }
+
+    /* ── Cards grid ── */
+    .plans-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      max-width: 860px;
+      margin: 0 auto 48px;
+    }
+
+    .plan-card {
+      background: var(--white);
+      border-radius: var(--radius-xl);
+      border: 2px solid var(--gray-200);
+      padding: 32px 28px;
+      position: relative;
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      animation: fadeUp .5s ease both;
+    }
+    .plan-card:nth-child(1) { animation-delay: .05s; }
+    .plan-card:nth-child(2) { animation-delay: .15s; }
+
+    .plan-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    /* Featured card */
+    .plan-card--featured {
+      border-color: var(--blue-500);
+      background: linear-gradient(160deg, #fff8fc 0%, #ffffff 60%);
+    }
+    .plan-card--featured::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--blue-400), var(--blue-600));
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    }
+
+    .plan-card__badge {
+      position: absolute;
+      top: 20px; right: 20px;
+      background: var(--blue-500);
+      color: #fff;
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      padding: 4px 11px;
+      border-radius: 99px;
+    }
+
+    .plan-card__icon {
+      width: 52px; height: 52px;
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 16px;
+    }
+    .plan-card__icon svg { width: 26px; height: 26px; }
+    .plan-card__icon--rose   { background: #fff1f5; color: var(--blue-600); }
+    .plan-card__icon--indigo { background: #eef2ff; color: #4f46e5; }
+
+    .plan-card__name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: 4px;
+    }
+    .plan-card__target {
+      font-size: .78rem;
+      color: var(--gray-500);
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+
+    /* Preço */
+    .plan-card__price-wrap {
+      display: flex;
+      align-items: flex-end;
+      gap: 4px;
+      margin-bottom: 6px;
+    }
+    .plan-card__currency {
+      font-size: .95rem;
+      font-weight: 700;
+      color: var(--gray-600);
+      margin-bottom: 6px;
+    }
+    .plan-card__amount {
+      font-family: var(--font-display);
+      font-size: 2.6rem;
+      color: var(--gray-900);
+      line-height: 1;
+    }
+    .plan-card--featured .plan-card__amount { color: var(--blue-600); }
+    .plan-card__period {
+      font-size: .8rem;
+      color: var(--gray-400);
+      margin-bottom: 6px;
+    }
+    .plan-card__savings {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: .75rem;
+      font-weight: 600;
+      color: #16a34a;
+      background: #dcfce7;
+      padding: 3px 10px;
+      border-radius: 99px;
+      margin-bottom: 22px;
+    }
+    .plan-card__savings svg { width: 11px; height: 11px; }
+
+    /* Separador */
+    .plan-card__divider {
+      height: 1px;
+      background: var(--gray-100);
+      margin: 0 0 22px;
+    }
+
+    /* Descrição */
+    .plan-card__desc {
+      font-size: .875rem;
+      color: var(--gray-600);
+      line-height: 1.75;
+      margin-bottom: 24px;
+      flex: 1;
+    }
+
+    /* Features */
+    .plan-card__features {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+    .plan-feature {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: .85rem;
+      color: var(--gray-700);
+    }
+    .plan-feature__icon {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: var(--blue-50);
+      color: var(--blue-600);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .plan-feature__icon svg { width: 10px; height: 10px; }
+    .plan-card--featured .plan-feature__icon { background: var(--blue-100); }
+
+    /* CTA */
+    .plan-card__cta {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .plan-card__btn {
+      width: 100%;
+      padding: 13px 20px;
+      border-radius: 14px;
+      font-size: .9rem;
+      font-weight: 700;
+      font-family: var(--font-body);
+      letter-spacing: -.01em;
+      transition: all var(--transition);
+      cursor: pointer;
+      border: none;
+    }
+    .plan-card__btn--outline {
+      background: transparent;
+      border: 2px solid var(--gray-200);
+      color: var(--gray-700);
+    }
+    .plan-card__btn--outline:hover {
+      border-color: var(--blue-400);
+      color: var(--blue-600);
+      background: var(--blue-50);
+    }
+    .plan-card__btn--primary {
+      background: linear-gradient(135deg, var(--blue-500), var(--blue-700));
+      color: #fff;
+      box-shadow: 0 3px 12px rgba(236,72,153,.35);
+    }
+    .plan-card__btn--primary:hover {
+      opacity: .92;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(236,72,153,.4);
+    }
+    .plan-card__trial {
+      text-align: center;
+      font-size: .75rem;
+      color: var(--gray-400);
+    }
+
+    /* ── Comparativo ── */
+    .plans-compare {
+      max-width: 860px;
+      margin: 0 auto 40px;
+      background: var(--white);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--gray-200);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      animation: fadeUp .5s .3s ease both;
+    }
+    .plans-compare__header {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      background: var(--gray-50);
+      border-bottom: 1px solid var(--gray-200);
+    }
+    .plans-compare__col {
+      padding: 16px 20px;
+      font-size: .8rem;
+      font-weight: 700;
+      color: var(--gray-600);
+      text-transform: uppercase;
+      letter-spacing: .07em;
+    }
+    .plans-compare__col--highlight { color: var(--blue-600); }
+
+    .plans-compare__row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      border-bottom: 1px solid var(--gray-100);
+      transition: background var(--transition);
+    }
+    .plans-compare__row:last-child { border-bottom: none; }
+    .plans-compare__row:hover { background: var(--gray-50); }
+
+    .plans-compare__cell {
+      padding: 13px 20px;
+      font-size: .85rem;
+      color: var(--gray-600);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .plans-compare__cell--label { font-weight: 500; color: var(--gray-700); }
+    .compare-check { color: var(--blue-600); }
+    .compare-check svg { width: 16px; height: 16px; }
+    .compare-x { color: var(--gray-300); }
+    .compare-x svg { width: 16px; height: 16px; }
+
+    /* ── FAQ strip ── */
+    .plans-faq {
+      max-width: 860px;
+      margin: 0 auto;
+      animation: fadeUp .5s .4s ease both;
+    }
+    .plans-faq__title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--gray-800);
+      margin-bottom: 14px;
+      text-align: center;
+    }
+    .faq-list { display: flex; flex-direction: column; gap: 8px; }
+    .faq-item {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+    .faq-item__q {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      font-size: .875rem;
+      font-weight: 600;
+      color: var(--gray-800);
+      text-align: left;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-body);
+      transition: background var(--transition);
+    }
+    .faq-item__q:hover { background: var(--gray-50); }
+    .faq-item__q svg { width: 16px; height: 16px; color: var(--gray-400); transition: transform var(--transition); flex-shrink: 0; }
+    .faq-item.open .faq-item__q svg { transform: rotate(180deg); }
+    .faq-item__a {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .35s cubic-bezier(.4,0,.2,1), opacity .25s;
+      opacity: 0;
+      padding: 0 18px;
+      font-size: .85rem;
+      color: var(--gray-600);
+      line-height: 1.7;
+    }
+    .faq-item.open .faq-item__a {
+      max-height: 200px;
+      opacity: 1;
+      padding: 0 18px 16px;
+    }
+
+    @media (max-width: 700px) {
+      .plans-grid { grid-template-columns: 1fr; }
+      .plans-hero__title { font-size: 1.7rem; }
+      .plans-compare { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════
+       SIDEBAR
+  ══════════════════════════════════════════ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar__logo">
+      <a href="index.html" class="sidebar__logo-link">
+        <img src="logo.svg" alt="CronoEstudo" class="sidebar__logo-img" />
+      </a>
+    </div>
+
+    <button class="sidebar__close" id="sidebarClose" aria-label="Fechar menu">
+      <i data-lucide="x"></i>
+    </button>
+
+    <nav class="sidebar__nav">
+      <ul class="sidebar__list">
+        <li class="sidebar__item">
+          <a href="index.html" class="sidebar__link" data-label="Dashboard">
+            <i data-lucide="layout-dashboard"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li class="sidebar__item">
+          <a href="cronogramas.html" class="sidebar__link" data-label="Cronogramas">
+            <i data-lucide="calendar-days"></i>
+            <span>Meus Cronogramas</span>
+          </a>
+        </li>
+        <li class="sidebar__item sidebar__item--has-sub" id="disciplinasToggle">
+          <a href="disciplinas.html" class="sidebar__link sidebar__link--toggle" data-label="Disciplinas">
+            <i data-lucide="book-open"></i>
+            <span>Disciplinas</span>
+            <i data-lucide="chevron-down" class="sidebar__chevron"></i>
+          </a>
+          <ul class="sidebar__sublist" id="disciplinasSub">
+            <li class="sidebar__subitem sidebar__subitem--active">
+              <a href="#" class="sidebar__sublink">Matemática</a>
+            </li>
+            <li class="sidebar__subitem"><a href="#" class="sidebar__sublink">História</a></li>
+            <li class="sidebar__subitem"><a href="#" class="sidebar__sublink">Biologia</a></li>
+            <li class="sidebar__subitem"><a href="#" class="sidebar__sublink">Redação</a></li>
+            <li class="sidebar__subitem"><a href="#" class="sidebar__sublink">Física</a></li>
+            <li class="sidebar__subitem"><a href="#" class="sidebar__sublink">Química</a></li>
+          </ul>
+        </li>
+        <li class="sidebar__item">
+          <a href="flashcards.html" class="sidebar__link" data-label="Flashcards">
+            <i data-lucide="layers"></i>
+            <span>Flashcards</span>
+          </a>
+        </li>
+        <li class="sidebar__item">
+          <a href="questoes.html" class="sidebar__link" data-label="Questões">
+            <i data-lucide="help-circle"></i>
+            <span>Banco de Questões</span>
+          </a>
+        </li>
+        <li class="sidebar__item">
+          <a href="desempenho.html" class="sidebar__link" data-label="Desempenho">
+            <i data-lucide="bar-chart-2"></i>
+            <span>Desempenho</span>
+          </a>
+        </li>
+        <li class="sidebar__item">
+          <a href="anotacoes.html" class="sidebar__link" data-label="Anotações">
+            <i data-lucide="notebook-pen"></i>
+            <span>Anotações</span>
+          </a>
+        </li>
+        <li class="sidebar__item">
+          <a href="suporte.html" class="sidebar__link" data-label="Suporte">
+            <i data-lucide="life-buoy"></i>
+            <span>Suporte</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="sidebar__plans">
+      <p class="sidebar__plans-label"><i data-lucide="graduation-cap"></i> Planos Pro</p>
+      <a href="#" class="sidebar__plan-item"><i data-lucide="circle-dot"></i> 9º ano</a>
+      <a href="#" class="sidebar__plan-item"><i data-lucide="star"></i> Terceirão</a>
+    </div>
+  </aside>
+
+  <div class="overlay" id="overlay"></div>
+
+  <!-- ══════════════════════════════════════════
+       MAIN WRAPPER
+  ══════════════════════════════════════════ -->
+  <div class="main-wrapper">
+
+    <!-- HEADER -->
+    <header class="header">
+      <button class="header__hamburger" id="hamburger" aria-label="Abrir menu">
+        <i data-lucide="menu"></i>
+      </button>
+
+      <nav class="header__nav">
+        <a href="index.html" class="header__nav-link" data-label="Início">
+          <i data-lucide="home"></i> Início
+        </a>
+        <a href="cursos.html" class="header__nav-link" data-label="Cursos">
+          <i data-lucide="graduation-cap"></i> Cursos
+        </a>
+        <a href="calendario.html" class="header__nav-link" data-label="Calendário">
+          <i data-lucide="calendar"></i> Calendário
+        </a>
+        <a href="planos.html" class="header__nav-link header__nav-link--active" data-label="Planos de Curso">
+          <i data-lucide="sparkles"></i> Planos de Curso
+        </a>
+        <a href="comunidade.html" class="header__nav-link" data-label="Comunidade">
+          <i data-lucide="users"></i> Comunidade
+        </a>
+      </nav>
+
+      <div class="header__right">
+        <div class="header__search">
+          <i data-lucide="search"></i>
+          <input type="text" placeholder="Pesquisar conteúdos, aulas..." />
+        </div>
+        <button class="header__notification" aria-label="Notificações">
+          <i data-lucide="bell"></i>
+          <span class="header__badge">3</span>
+        </button>
+        <div class="header__profile">
+          <div class="header__avatar">AS</div>
+          <div class="header__profile-info">
+            <span class="header__profile-name">Beatriz Gabriele</span>
+            <span class="header__profile-meta">
+              <i data-lucide="flame"></i> 25 dias · Nível 12
+            </span>
+          </div>
+          <i data-lucide="chevron-down"></i>
+        </div>
+      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <main class="content">
+
+      <!-- Hero -->
+      <div class="plans-hero">
+        <div class="plans-hero__eyebrow">
+          <i data-lucide="sparkles"></i> Planos Anuais
+        </div>
+        <h1 class="plans-hero__title">
+          Escolha o plano certo<br>para a sua <span>jornada</span>
+        </h1>
+        <p class="plans-hero__subtitle">
+          Planos pensados para cada fase do estudante — do Vestibulinho ao ENEM. Com estrutura, metas e revisões no momento certo.
+        </p>
+        <div class="plans-toggle">
+          <button class="plans-toggle__btn plans-toggle__btn--active" id="toggleAnual">Anual</button>
+          <button class="plans-toggle__btn" id="toggleMensal">Mensal</button>
+        </div>
+      </div>
+
+      <!-- Cards -->
+      <div class="plans-grid">
+
+        <!-- ── Vestibulinho ── -->
+        <div class="plan-card">
+          <div class="plan-card__icon plan-card__icon--rose">
+            <i data-lucide="school"></i>
+          </div>
+          <div class="plan-card__name">Vestibulinho</div>
+          <div class="plan-card__target">Para estudantes do 9º ano</div>
+
+          <div class="plan-card__price-wrap">
+            <span class="plan-card__currency">R$</span>
+            <span class="plan-card__amount" id="price-vest">129<small style="font-size:1.2rem">,99</small></span>
+          </div>
+          <div class="plan-card__period" id="period-vest">por ano · cobrado anualmente</div>
+          <div class="plan-card__savings">
+            <i data-lucide="tag"></i> Economia de R$96 vs. mensal
+          </div>
+
+          <div class="plan-card__divider"></div>
+
+          <p class="plan-card__desc">
+            Preparar-se para o primeiro grande desafio acadêmico da vida — o <strong>Vestibulinho</strong> — exige mais do que apenas vontade; exige estratégia. Para um estudante do 9º ano, conciliar as matérias da escola com o conteúdo específico de processos seletivos como ETEC, IF ou colégios técnicos pode parecer exaustivo, mas com um plano estruturado, essa jornada se torna muito mais leve e produtiva.
+          </p>
+
+          <ul class="plan-card__features">
+            <li class="plan-feature">
+              <span class="plan-feature__icon"><i data-lucide="check"></i></span>
+              Cronograma semanal personalizado para 9º ano
+            </li>
+            <li class="plan-feature">
+              <span class="plan-feature__icon"><i data-lucide="check"></i></span>
+              Banco de questões ETEC, IF e colégios técnicos
+            </li>
+            <li class="plan-feature">
+              <span class="plan-feature__icon"><i data-lucide="check"></i></span>
+              Flashcards de revisão automática por disciplina
+            </li>
+            <li class="plan-feature">
+              <span class="plan-feature__icon"><i data-lucide="check"></i></span>
+              Simulados mensais com gabarito comentado
+            </li>
+            <li class="plan-feature">
+              <span class="plan-feature__icon"><i data-lucide="check"></i></span>
+              Relatório de desempenho semanal
+            </li>
+          </ul>
+
+          <div class="plan-card__cta">
+            <button class="plan-card__btn plan-card__btn--outline" onclick="handlePlan('vestibulinho')">
+              Começar agora
+            </button>
+            <p class="plan-card__trial">7 dias grátis · Sem cartão de crédito</p>
+          </div>
+        </div>
+
+        <!-- ── Vestibulares ── -->
+        <div class="plan-card plan-card--featured">
+          <span class="plan-card__badge">Mais popular</span>
+          <div class="plan-card__icon plan-card__icon--indigo">
+            <i data-lucide="trophy"></i>
+          </div>
+          <div class="plan-card__name">Vestibulares</div>
+          <div class="plan-card__target">Para estudantes do Ensino Médio</div>
+
+          <div class="plan-card__price-wrap">
+            <span class="plan-card__currency">R$</span>
+            <span class="plan-card__amount" id="price-vest2">179<small style="font-size:1.2rem">,99</small></span>
+          </div>
+          <div class="plan-card__period" id="period-vest2">por ano · cobrado anualmente</div>
+          <div class="plan-card__savings">
+            <i data-lucide="tag"></i> Economia de R$136 vs. mensal
+          </div>
+
+          <div class="plan-card__divider"></div>
+
+          <p class="plan-card__desc">
+            Preparar-se para os vestibulares exige mais do que apenas vontade; exige organização, constância e um bom plano de estudos. Para um estudante do Ensino Médio, conciliar as matérias da escola com a revisão dos principais conteúdos cobrados em provas como <strong>ENEM</strong> e vestibulares tradicionais pode parecer cansativo, mas com um cronograma bem estruturado, metas semanais e momentos de revisão, essa preparação se torna muito mais eficiente e menos estressante.
+          </p>
+
+          <ul class="plan-card__features">
+            <li class="plan-feature">
+              <span class="plan-feature__icon"><i data-lucide="check"></i></span>
+              Tudo do Vestibulinho, mais:
+            </li>
+            <li class="plan-feature">
+              <span class="plan-feature__icon"><i data-lucide="check"></i></span>
+              Cronograma focado em ENEM e vestibulares tradicionais
+            </li>
+            <li class="plan-feature">
+              <span class="plan-feature__icon"><i data-lucide="check"></i></span>
+              Banco de redações com correção temática
+            </li>
+            <li class="plan-feature">
+              <span class="plan-feature__icon"><i data-lucide="check"></i></span>
+              Simulados semanais com ranking por área
+            </li>
+            <li class="plan-feature">
+              <span class="plan-feature__icon"><i data-lucide="check"></i></span>
+              Análise de pontos fracos com sugestões de estudo
+            </li>
+            <li class="plan-feature">
+              <span class="plan-feature__icon"><i data-lucide="check"></i></span>
+              Comunidade exclusiva com monitores
+            </li>
+          </ul>
+
+          <div class="plan-card__cta">
+            <button class="plan-card__btn plan-card__btn--primary" onclick="handlePlan('vestibulares')">
+              Assinar Vestibulares
+            </button>
+            <p class="plan-card__trial">7 dias grátis · Cancele quando quiser</p>
+          </div>
+        </div>
+
+      </div><!-- /plans-grid -->
+
+      <!-- Comparativo -->
+      <div class="plans-compare">
+        <div class="plans-compare__header">
+          <div class="plans-compare__col">Recurso</div>
+          <div class="plans-compare__col">Vestibulinho</div>
+          <div class="plans-compare__col plans-compare__col--highlight">Vestibulares</div>
+        </div>
+        <div class="plans-compare__row">
+          <div class="plans-compare__cell plans-compare__cell--label">Cronograma personalizado</div>
+          <div class="plans-compare__cell compare-check"><i data-lucide="check-circle-2"></i></div>
+          <div class="plans-compare__cell compare-check"><i data-lucide="check-circle-2"></i></div>
+        </div>
+        <div class="plans-compare__row">
+          <div class="plans-compare__cell plans-compare__cell--label">Banco de questões</div>
+          <div class="plans-compare__cell compare-check"><i data-lucide="check-circle-2"></i></div>
+          <div class="plans-compare__cell compare-check"><i data-lucide="check-circle-2"></i></div>
+        </div>
+        <div class="plans-compare__row">
+          <div class="plans-compare__cell plans-compare__cell--label">Flashcards automáticos</div>
+          <div class="plans-compare__cell compare-check"><i data-lucide="check-circle-2"></i></div>
+          <div class="plans-compare__cell compare-check"><i data-lucide="check-circle-2"></i></div>
+        </div>
+        <div class="plans-compare__row">
+          <div class="plans-compare__cell plans-compare__cell--label">Simulados mensais</div>
+          <div class="plans-compare__cell compare-check"><i data-lucide="check-circle-2"></i></div>
+          <div class="plans-compare__cell compare-check"><i data-lucide="check-circle-2"></i></div>
+        </div>
+        <div class="plans-compare__row">
+          <div class="plans-compare__cell plans-compare__cell--label">Simulados semanais</div>
+          <div class="plans-compare__cell compare-x"><i data-lucide="minus"></i></div>
+          <div class="plans-compare__cell compare-check"><i data-lucide="check-circle-2"></i></div>
+        </div>
+        <div class="plans-compare__row">
+          <div class="plans-compare__cell plans-compare__cell--label">Correção de redação</div>
+          <div class="plans-compare__cell compare-x"><i data-lucide="minus"></i></div>
+          <div class="plans-compare__cell compare-check"><i data-lucide="check-circle-2"></i></div>
+        </div>
+        <div class="plans-compare__row">
+          <div class="plans-compare__cell plans-compare__cell--label">Análise de pontos fracos</div>
+          <div class="plans-compare__cell compare-x"><i data-lucide="minus"></i></div>
+          <div class="plans-compare__cell compare-check"><i data-lucide="check-circle-2"></i></div>
+        </div>
+        <div class="plans-compare__row">
+          <div class="plans-compare__cell plans-compare__cell--label">Comunidade com monitores</div>
+          <div class="plans-compare__cell compare-x"><i data-lucide="minus"></i></div>
+          <div class="plans-compare__cell compare-check"><i data-lucide="check-circle-2"></i></div>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="plans-faq">
+        <h3 class="plans-faq__title">Dúvidas frequentes</h3>
+        <ul class="faq-list">
+          <li class="faq-item" id="faq1">
+            <button class="faq-item__q" onclick="toggleFaq('faq1')">
+              Posso trocar de plano depois?
+              <i data-lucide="chevron-down"></i>
+            </button>
+            <div class="faq-item__a">
+              Sim! Você pode fazer upgrade ou downgrade do seu plano a qualquer momento. A diferença de valor é calculada proporcionalmente ao período restante.
+            </div>
+          </li>
+          <li class="faq-item" id="faq2">
+            <button class="faq-item__q" onclick="toggleFaq('faq2')">
+              O período grátis exige cartão de crédito?
+              <i data-lucide="chevron-down"></i>
+            </button>
+            <div class="faq-item__a">
+              Não. Os 7 dias de teste são completamente gratuitos e sem necessidade de cadastrar forma de pagamento. Ao final, você decide se quer assinar.
+            </div>
+          </li>
+          <li class="faq-item" id="faq3">
+            <button class="faq-item__q" onclick="toggleFaq('faq3')">
+              Como funciona o cronograma personalizado?
+              <i data-lucide="chevron-down"></i>
+            </button>
+            <div class="faq-item__a">
+              Ao entrar no plano, você responde um questionário rápido sobre horários disponíveis e matérias prioritárias. O CronoEstudo gera um cronograma semanal adaptado ao seu perfil, que você pode ajustar a qualquer momento.
+            </div>
+          </li>
+          <li class="faq-item" id="faq4">
+            <button class="faq-item__q" onclick="toggleFaq('faq4')">
+              Posso cancelar quando quiser?
+              <i data-lucide="chevron-down"></i>
+            </button>
+            <div class="faq-item__a">
+              Sim, sem multa ou burocracia. Você cancela pelo próprio painel e o acesso é mantido até o fim do período pago.
+            </div>
+          </li>
+        </ul>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    // Toggle anual/mensal
+    const precos = {
+      anual:   { vest: '129<small style="font-size:1.2rem">,99</small>', vest2: '179<small style="font-size:1.2rem">,99</small>', periodo: 'por ano · cobrado anualmente' },
+      mensal:  { vest: '18<small style="font-size:1.2rem">,90</small>',  vest2: '26<small style="font-size:1.2rem">,90</small>',  periodo: 'por mês · cobrado mensalmente' }
+    };
+
+    function setPreco(modo) {
+      const d = precos[modo];
+      document.getElementById('price-vest').innerHTML  = d.vest;
+      document.getElementById('price-vest2').innerHTML = d.vest2;
+      document.getElementById('period-vest').textContent  = d.periodo;
+      document.getElementById('period-vest2').textContent = d.periodo;
+    }
+
+    document.getElementById('toggleAnual')?.addEventListener('click', function() {
+      this.classList.add('plans-toggle__btn--active');
+      document.getElementById('toggleMensal').classList.remove('plans-toggle__btn--active');
+      setPreco('anual');
+    });
+    document.getElementById('toggleMensal')?.addEventListener('click', function() {
+      this.classList.add('plans-toggle__btn--active');
+      document.getElementById('toggleAnual').classList.remove('plans-toggle__btn--active');
+      setPreco('mensal');
+    });
+
+    // FAQ accordion
+    function toggleFaq(id) {
+      const item = document.getElementById(id);
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
+    // CTA
+    function handlePlan(plano) {
+      alert(`Você escolheu o plano ${plano === 'vestibulinho' ? 'Vestibulinho (R$129,99/ano)' : 'Vestibulares (R$179,99/ano)'}!\n\nRedirecionando para o checkout...`);
+    }
+  </script>
+</body>
+</html>
