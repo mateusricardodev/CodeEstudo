@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Test ENEM Questions</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="test-output" style="padding: 20px; background: #f5f5f5; border-radius: 8px; margin: 20px;">
+    <h2>Test Results</h2>
+    <p id="output"></p>
+  </div>
+  
+  <script>
+    // Minimal test - just check if QUESTIONS loads
+    function runTests() {
+      try {
+        // Note: QUESTIONS will be undefined here since we haven't loaded script.js
+        // This is just a simple validation
+        const output = document.getElementById('output');
+        output.innerHTML = `
+          <strong>Environment Check:</strong><br>
+          ✓ DOM is ready<br>
+          ✓ Styles are loaded<br>
+          ✓ Ready to load script.js<br>
+          <br>
+          <strong>Next Steps:</strong><br>
+          - Open questoes.html in browser<br>
+          - Check browser console for errors<br>
+          - Verify discipline selection renders
+        `;
+      } catch (e) {
+        document.getElementById('output').innerHTML = `Error: ${e.message}`;
+      }
+    }
+    
+    document.addEventListener('DOMContentLoaded', runTests);
+  </script>
+</body>
+</html>

@@ -25,6 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initFlashcardReview();
   initQuestionSystem();
   initPerformanceDashboard();
+  initDisciplinesPageEnhancements();
+  initNotesSystem();
   renderSchedule();
   initCheckboxes();
 });
@@ -670,6 +672,331 @@ const QUESTIONS = [
     correta: 'C',
     explicacao: 'O espelho convexo (divergente) sempre produz imagens virtuais, direitas e menores que o objeto.',
     disciplina: 'Física'
+  },
+  {
+    enunciado: 'What is the correct form of the verb "to be" in the sentence: "She ___ a teacher."?',
+    alternativas: {
+      A: 'are',
+      B: 'am',
+      C: 'is',
+      D: 'be',
+      E: 'been'
+    },
+    correta: 'C',
+    explicacao: 'Com o sujeito "she" (ela), usamos "is" como forma presente do verbo "to be".',
+    disciplina: 'Inglês'
+  },
+  {
+    enunciado: 'Which sentence is grammatically correct in English?',
+    alternativas: {
+      A: 'He go to school every day.',
+      B: 'He goes to school every day.',
+      C: 'He is go to school every day.',
+      D: 'He going to school every day.',
+      E: 'He gone to school every day.'
+    },
+    correta: 'B',
+    explicacao: 'Com sujeito singular "he", o verbo "go" deve ser conjugado como "goes" no presente simples.',
+    disciplina: 'Inglês'
+  },
+  {
+    enunciado: 'What is the past tense of "eat"?',
+    alternativas: {
+      A: 'eats',
+      B: 'ate',
+      C: 'eaten',
+      D: 'eating',
+      E: 'eatted'
+    },
+    correta: 'B',
+    explicacao: '"Ate" é o passado simples do verbo irregular "eat". "Eaten" é o particípio passado.',
+    disciplina: 'Inglês'
+  },
+  {
+    enunciado: 'Choose the correct form: "If I _____ rich, I would travel around the world."',
+    alternativas: {
+      A: 'am',
+      B: 'was',
+      C: 'were',
+      D: 'had been',
+      E: 'would be'
+    },
+    correta: 'C',
+    explicacao: 'Em contrafatos (second conditional), usamos "were" com "I" mesmo que seja não-padrão: "If I were..."',
+    disciplina: 'Inglês'
+  },
+  {
+    enunciado: 'Qual é a principal características da Filosofia Existencialista?',
+    alternativas: {
+      A: 'A existência precede a essência.',
+      B: 'O ser humano é um produto das circunstâncias.',
+      C: 'A razão é a única fonte de conhecimento.',
+      D: 'A felicidade é o maior bem.',
+      E: 'Deus é a origem de tudo.'
+    },
+    correta: 'A',
+    explicacao: 'Na filosofia existencialista, especialmente em Sartre, a existência precede a essência - somos livres para criar nosso próprio significado.',
+    disciplina: 'Filosofia'
+  },
+  {
+    enunciado: 'Qual filósofo propôs a ideia da "Caverna" como metáfora do conhecimento?',
+    alternativas: {
+      A: 'Aristóteles',
+      B: 'Platão',
+      C: 'Sócrates',
+      D: 'Descartes',
+      E: 'Kant'
+    },
+    correta: 'B',
+    explicacao: 'Platão descreveu a "Alegoria da Caverna" em sua obra "A República", ilustrando etapas do conhecimento e da libertação da ignorância.',
+    disciplina: 'Filosofia'
+  },
+  {
+    enunciado: 'O que é a ética de acordo com a filosofia?',
+    alternativas: {
+      A: 'O estudo das leis jurídicas.',
+      B: 'O estudo dos valores morais e do que é correto e incorreto.',
+      C: 'O estudo da política.',
+      D: 'O estudo da história.',
+      E: 'O estudo das artes.'
+    },
+    correta: 'B',
+    explicacao: 'A ética é o ramo da filosofia que estuda valores morais e princípios que guiam comportamentos humanos.',
+    disciplina: 'Filosofia'
+  },
+  {
+    enunciado: 'Qual é o conceito-chave do "Dualismo Cartesiano" de Descartes?',
+    alternativas: {
+      A: 'Existe apenas a matéria.',
+      B: 'Existe apenas o espírito.',
+      C: 'Existem duas substâncias: mente e corpo.',
+      D: 'Tudo é conhecimento.',
+      E: 'Não existe realidade além dos sentidos.'
+    },
+    correta: 'C',
+    explicacao: 'Descartes propôs que existem duas substâncias distintas: res cogitans (mente/pensamento) e res extensa (corpo/matéria).',
+    disciplina: 'Filosofia'
+  },
+  {
+    enunciado: 'O que é Sociologia?',
+    alternativas: {
+      A: 'O estudo da anatomia do corpo humano.',
+      B: 'O estudo científico do comportamento humano em grupos e sociedade.',
+      C: 'O estudo da história política.',
+      D: 'O estudo exclusivo da economia.',
+      E: 'O estudo das personalidades individuais.'
+    },
+    correta: 'B',
+    explicacao: 'Sociologia é a ciência que estuda as estruturas sociais, instituições e comportamentos humanos em sociedade.',
+    disciplina: 'Sociologia'
+  },
+  {
+    enunciado: 'Qual pensador é considerado um dos fundadores da Sociologia moderna?',
+    alternativas: {
+      A: 'Karl Marx',
+      B: 'Immanuel Kant',
+      C: 'Auguste Comte',
+      D: 'Adam Smith',
+      E: 'Thomas Hobbes'
+    },
+    correta: 'C',
+    explicacao: 'Auguste Comte é considerado o fundador da sociologia, tendo cunhado o termo e desenvolvido o "positivismo" como abordagem.',
+    disciplina: 'Sociologia'
+  },
+  {
+    enunciado: 'Na sociologia, qual conceito refere-se à posição social de uma pessoa?',
+    alternativas: {
+      A: 'Papel social',
+      B: 'Status',
+      C: 'Norma social',
+      D: 'Instituição',
+      E: 'Estratificação'
+    },
+    correta: 'B',
+    explicacao: 'Status refere-se à posição ou prestígio de uma pessoa na hierarquia social.',
+    disciplina: 'Sociologia'
+  },
+  {
+    enunciado: 'O que é um "papel social" em sociologia?',
+    alternativas: {
+      A: 'Uma profissão remunerada.',
+      B: 'Um conjunto de comportamentos e responsabilidades esperados de alguém em uma posição específica.',
+      C: 'Uma lei estabelecida pelo governo.',
+      D: 'Uma característica física imutável.',
+      E: 'Uma crença religiosa.'
+    },
+    correta: 'B',
+    explicacao: 'O papel social é um conjunto de expectativas comportamentais associadas a uma posição social que um indivíduo ocupa.',
+    disciplina: 'Sociologia'
+  },
+  {
+    enunciado: 'Qual é a diferença entre orações "[Subordinadas Adjetivas Restritivas" e "Subordinadas Adjetivas Explicativas"?',
+    alternativas: {
+      A: 'As restritivas restringem o sentido do nome e não têm pausa; as explicativas adicionam informação e têm pausa.',
+      B: 'Não há diferença entre elas.',
+      C: 'As explicativas modificam o verbo; as restritivas modificam o nome.',
+      D: 'As restritivas vêm sempre no final do período.',
+      E: 'As explicativas nunca usam pronomes relativos.'
+    },
+    correta: 'A',
+    explicacao: 'Restritivas restringem/definem (sem pausa na fala, sem vírgula na escrita). Explicativas adicionam informação (com pausa e vírgula).',
+    disciplina: 'Gramática'
+  },
+  {
+    enunciado: 'Qual termo identifica a palavra que recebe a ação do verbo?',
+    alternativas: {
+      A: 'Sujeito',
+      B: 'Objeto Direto',
+      C: 'Predicado',
+      D: 'Complemento Nominal',
+      E: 'Adjunto Adverbial'
+    },
+    correta: 'B',
+    explicacao: 'O objeto direto é o termo que recebe a ação do verbo transitivo direto sem preposição.',
+    disciplina: 'Gramática'
+  },
+  {
+    enunciado: 'Qual é a classificação da palavra "rápido" nesta frase: "Ele corria rápido"?',
+    alternativas: {
+      A: 'Adjetivo',
+      B: 'Advérbio',
+      C: 'Substantivo',
+      D: 'Verbo',
+      E: 'Preposição'
+    },
+    correta: 'B',
+    explicacao: 'Nesta frase, "rápido" modifica o verbo "corria", exercendo função de advérbio de modo.',
+    disciplina: 'Gramática'
+  },
+  {
+    enunciado: 'Qual é a estrutura correta de uma oração com vírgula em uma enumeração?',
+    alternativas: {
+      A: 'Elementos separados por ponto.',
+      B: 'Elementos separados por vírgula, e o último introduzido por "e".',
+      C: 'Todos os elementos separados por "e".',
+      D: 'Elementos sem separação clara.',
+      E: 'Apenas dois elementos unidos por vírgula.'
+    },
+    correta: 'B',
+    explicacao: 'Na enumeração, elementos são separados por vírgula, e o último geralmente vem precedido de "e" (série enumerativa).',
+    disciplina: 'Gramática'
+  },
+  {
+    enunciado: 'Qual é o antônimo de "verboso"?',
+    alternativas: {
+      A: 'Prolixo',
+      B: 'Conciso',
+      C: 'Redundante',
+      D: 'Loquaz',
+      E: 'Eloquente'
+    },
+    correta: 'B',
+    explicacao: '"Verboso" significa prolixo (muitas palavras); "conciso" é seu antônimo (poucas palavras, direto).',
+    disciplina: 'Gramática'
+  },
+  {
+    enunciado: 'Qual obra é considerada a primeira grande obra da literatura portuguesa?',
+    alternativas: {
+      A: 'Os Lusíadas',
+      B: 'Mensagem',
+      C: 'Cancioneiro da Ajuda',
+      D: 'O Cortiço',
+      E: 'Dom Casmurro'
+    },
+    correta: 'C',
+    explicacao: 'O Cancioneiro da Ajuda é a mais antiga antologia de poesia trovadoresca portuguesa, do século XIII.',
+    disciplina: 'Literatura'
+  },
+  {
+    enunciado: 'Qual é o movimento literário ao qual Machado de Assis está associado?',
+    alternativas: {
+      A: 'Romantismo',
+      B: 'Realismo/Naturalismo',
+      C: 'Modernismo',
+      D: 'Barroco',
+      E: 'Arcadismo'
+    },
+    correta: 'B',
+    explicacao: 'Machado de Assis é o principal expoente do Realismo na literatura brasileira do século XIX.',
+    disciplina: 'Literatura'
+  },
+  {
+    enunciado: 'Qual é a característica principal do Realismo literário?',
+    alternativas: {
+      A: 'Idealização de sentimentos e natureza.',
+      B: 'Representação fiel da realidade social e cotidiana.',
+      C: 'Busca pela beleza e pela perfeição da forma.',
+      D: 'Exploração do fantástico e do oculto.',
+      E: 'Retorno aos valores clássicos greco-romanos.'
+    },
+    correta: 'B',
+    explicacao: 'O Realismo literário busca representar a realidade de forma objetiva, sem idealizações românticas.',
+    disciplina: 'Literatura'
+  },
+  {
+    enunciado: 'Qual poeta português é autor de "Mensagem"?',
+    alternativas: {
+      A: 'Luis de Camões',
+      B: 'Fernando Pessoa',
+      C: 'Cesário Verde',
+      D: 'Antero de Quental',
+      E: 'Eça de Queirós'
+    },
+    correta: 'B',
+    explicacao: '"Mensagem" é uma obra poética de Fernando Pessoa que explora a identidade portuguesa e mística.',
+    disciplina: 'Literatura'
+  },
+  {
+    enunciado: 'Qual continente é o maior do mundo em extensão territorial?',
+    alternativas: {
+      A: 'África',
+      B: 'América do Sul',
+      C: 'Ásia',
+      D: 'América do Norte',
+      E: 'Oceania'
+    },
+    correta: 'C',
+    explicacao: 'A Ásia é o maior continente com aproximadamente 44,6 milhões de km².',
+    disciplina: 'Geografia'
+  },
+  {
+    enunciado: 'Qual é a capital da Austrália?',
+    alternativas: {
+      A: 'Sydney',
+      B: 'Melbourne',
+      C: 'Canberra',
+      D: 'Brisbane',
+      E: 'Perth'
+    },
+    correta: 'C',
+    explicacao: 'Canberra é a capital planejada da Austrália, construída em 1927 como um compromisso entre Sydney e Melbourne.',
+    disciplina: 'Geografia'
+  },
+  {
+    enunciado: 'Qual é o servidor mais comprido do Brasil?',
+    alternativas: {
+      A: 'Rio São Francisco',
+      B: 'Rio Amazonas',
+      C: 'Rio Paraná',
+      D: 'Rio Tocantins',
+      E: 'Rio Araguaia'
+    },
+    correta: 'B',
+    explicacao: 'O Rio Amazonas é o servidor mais comprido do Brasil, com aproximadamente 6.992 km de extensão.',
+    disciplina: 'Geografia'
+  },
+  {
+    enunciado: 'Qual bioma brasileiro é conhecido como a "floresta tropical úmida"?',
+    alternativas: {
+      A: 'Cerrado',
+      B: 'Caatinga',
+      C: 'Amazônia',
+      D: 'Pantanal',
+      E: 'Pampa'
+    },
+    correta: 'C',
+    explicacao: 'A Amazônia é a maior floresta tropical úmida do mundo, localizada no Brasil e em outros países da América do Sul.',
+    disciplina: 'Geografia'
   }
 ];
 
@@ -710,15 +1037,36 @@ function renderDisciplineSelection() {
   if (!disciplineGrid) return;
 
   const disciplines = getAvailableDisciplines();
-  disciplineGrid.innerHTML = disciplines.map((disciplina) => `
-    <button type="button" class="discipline-card" data-discipline="${disciplina}">
-      <span class="discipline-card__icon"></span>
-      <span class="discipline-card__name">${disciplina}</span>
-      <span class="discipline-card__count">${QUESTIONS.filter((q) => q.disciplina === disciplina).length} questões</span>
-    </button>
-  `).join('');
+  const performanceData = getPerformanceData();
 
-  disciplineGrid.querySelectorAll('.discipline-card').forEach((btn) => {
+  disciplineGrid.innerHTML = disciplines.map((disciplina) => {
+    const summary = performanceData[disciplina];
+    const progress = summary ? summary.accuracy : 0;
+    const remaining = 100 - progress;
+    const status = progress === 0 ? 'Não iniciado' : 
+                   progress < 50 ? 'Em progresso' : 
+                   progress < 100 ? 'Quase pronto' : 
+                   'Completado';
+
+    return `
+      <article class="summary-card">
+        <div class="summary-card__header"><span class="summary-card__label">${disciplina}</span></div>
+        <div class="summary-card__progress-wrap">
+          <div class="summary-card__progress-bar"><div class="summary-card__progress-fill" style="width: ${progress}%;"></div></div>
+          <span class="summary-card__progress-pct">${progress}%</span>
+        </div>
+        <p class="summary-card__sub">${status} · ${summary ? `${summary.correct} acertos` : 'Comece agora'}</p>
+        <button type="button" class="summary-card__action-btn" data-discipline="${disciplina}">
+          ${progress === 0 ? 'Começar' : 'Continuar'} <i data-lucide="arrow-right">→</i>
+        </button>
+      </article>
+    `;
+  }).join('');
+
+  // Inicializa os ícones lucide
+  if (typeof lucide !== 'undefined') lucide.createIcons();
+
+  disciplineGrid.querySelectorAll('.summary-card__action-btn').forEach((btn) => {
     btn.addEventListener('click', () => {
       currentDiscipline = btn.dataset.discipline;
       correctCount = 0;
@@ -732,6 +1080,7 @@ function renderDisciplineSelection() {
     });
   });
 }
+
 
 function getAvailableDisciplines() {
   return [...new Set(QUESTIONS.map((question) => question.disciplina))];
@@ -1136,6 +1485,218 @@ function updateWeekRange() {
   const baseStart = 7 + weekOffset;
   const baseEnd   = 13 + weekOffset;
   el.textContent  = `Março ${baseStart}–${baseEnd}`;
+}
+
+/* ══════════════════════════════════════════════════════
+   6. PÁGINA DE DISCIPLINAS - Enhancements
+══════════════════════════════════════════════════════ */
+function initDisciplinesPageEnhancements() {
+  // Adiciona funcionalidade ao botão "Estudar Agora"
+  const studyButton = document.querySelector('.weekly-recommendation__btn');
+  if (studyButton) {
+    studyButton.addEventListener('click', () => {
+      window.location.href = 'questoes.html';
+    });
+  }
+
+  // Adiciona interatividade aos cards de disciplinas
+  const disciplineCards = document.querySelectorAll('.summary-card');
+  disciplineCards.forEach((card) => {
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', () => {
+      // Extrai o nome da disciplina do card
+      const disciplineName = card.querySelector('.summary-card__label')?.textContent || '';
+      if (disciplineName) {
+        // Redireciona para questões da disciplina específica
+        window.location.href = `questoes.html?disciplina=${encodeURIComponent(disciplineName)}`;
+      }
+    });
+
+    // Feedback visual onhover
+    card.addEventListener('mouseenter', () => {
+      card.style.transform = 'translateY(-6px)';
+    });
+
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'translateY(0)';
+    });
+  });
+
+  // Adiciona animação de entrada nos títulos de seções
+  const sectionTitles = document.querySelectorAll('.disciplines-section__title');
+  sectionTitles.forEach((title, index) => {
+    title.style.opacity = '0';
+    title.style.animation = `fadeInDown 0.6s ease-out ${0.1 * index}s forwards`;
+  });
+}
+
+/* ══════════════════════════════════════════════════════
+   6. SISTEMA DE ANOTAÇÕES
+══════════════════════════════════════════════════════ */
+const notesStorageKey = 'cronoStudyNotes';
+
+function initNotesSystem() {
+  const newNoteBtn = document.getElementById('newNoteBtn');
+  const noteModal = document.getElementById('noteModal');
+  const modalOverlay = document.getElementById('modalOverlay');
+  const modalCloseBtn = document.getElementById('modalCloseBtn');
+  const modalCancelBtn = document.getElementById('modalCancelBtn');
+  const noteForm = document.getElementById('noteForm');
+  const notesSearchInput = document.getElementById('notesSearchInput');
+  const notesFilterDiscipline = document.getElementById('notesFilterDiscipline');
+
+  if (!newNoteBtn) return; // Page is not anotacoes.html
+
+  let editingNoteId = null;
+
+  // Open modal
+  function openModal(id = null) {
+    editingNoteId = id;
+    const modal = document.getElementById('noteModal');
+    const form = document.getElementById('noteForm');
+    const modalTitle = document.getElementById('modalTitle');
+
+    if (id) {
+      const notes = getNotes();
+      const note = notes.find(n => n.id === id);
+      if (note) {
+        modalTitle.textContent = 'Editar Anotação';
+        document.getElementById('noteTitle').value = note.title;
+        document.getElementById('noteDiscipline').value = note.discipline;
+        document.getElementById('noteContent').value = note.content;
+      }
+    } else {
+      modalTitle.textContent = 'Nova Anotação';
+      form.reset();
+    }
+
+    modal.style.display = 'flex';
+    setTimeout(() => {
+      document.getElementById('noteTitle').focus();
+    }, 0);
+  }
+
+  function closeModal() {
+    noteModal.style.display = 'none';
+    editingNoteId = null;
+  }
+
+  newNoteBtn.addEventListener('click', () => openModal());
+  modalCloseBtn.addEventListener('click', closeModal);
+  modalCancelBtn.addEventListener('click', closeModal);
+  modalOverlay.addEventListener('click', closeModal);
+
+  // Form submit
+  noteForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const title = document.getElementById('noteTitle').value;
+    const discipline = document.getElementById('noteDiscipline').value;
+    const content = document.getElementById('noteContent').value;
+
+    if (!title || !discipline || !content) return;
+
+    const notes = getNotes();
+    if (editingNoteId) {
+      const note = notes.find(n => n.id === editingNoteId);
+      if (note) {
+        note.title = title;
+        note.discipline = discipline;
+        note.content = content;
+        note.updatedAt = new Date().toISOString();
+      }
+    } else {
+      notes.push({
+        id: Date.now(),
+        title,
+        discipline,
+        content,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      });
+    }
+
+    localStorage.setItem(notesStorageKey, JSON.stringify(notes));
+    closeModal();
+    renderNotes();
+  });
+
+  // Search & Filter
+  notesSearchInput.addEventListener('input', renderNotes);
+  notesFilterDiscipline.addEventListener('change', renderNotes);
+
+  // Initial render
+  renderNotes();
+
+  function renderNotes() {
+    const notesList = document.getElementById('notesList');
+    const notesEmpty = document.getElementById('notesEmpty');
+    const searchTerm = notesSearchInput.value.toLowerCase();
+    const selectedDiscipline = notesFilterDiscipline.value;
+
+    let notes = getNotes();
+
+    // Filter
+    notes = notes.filter(note => {
+      const matchSearch = note.title.toLowerCase().includes(searchTerm) || 
+                         note.content.toLowerCase().includes(searchTerm);
+      const matchDiscipline = !selectedDiscipline || note.discipline === selectedDiscipline;
+      return matchSearch && matchDiscipline;
+    });
+
+    if (notes.length === 0) {
+      notesList.innerHTML = '';
+      notesEmpty.style.display = 'block';
+      return;
+    }
+
+    notesEmpty.style.display = 'none';
+    notesList.innerHTML = notes.sort((a, b) => 
+      new Date(b.updatedAt) - new Date(a.updatedAt)
+    ).map((note) => {
+      const date = new Date(note.createdAt);
+      const dateStr = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+      return `
+        <article class="notes-card" data-discipline="${note.discipline}">
+          <div class="notes-card__header">
+            <h3 class="notes-card__title">${note.title}</h3>
+          </div>
+          <span class="notes-card__discipline">${note.discipline}</span>
+          <p class="notes-card__content">${note.content}</p>
+          <div class="notes-card__footer">
+            <span class="notes-card__date">${dateStr}</span>
+            <div class="notes-card__actions">
+              <button class="notes-card__btn notes-edit-btn" data-id="${note.id}">Editar</button>
+              <button class="notes-card__btn notes-card__btn--danger notes-delete-btn" data-id="${note.id}">Excluir</button>
+            </div>
+          </div>
+        </article>
+      `;
+    }).join('');
+
+    // Add event listeners
+    document.querySelectorAll('.notes-edit-btn').forEach(btn => {
+      btn.addEventListener('click', () => openModal(parseInt(btn.dataset.id)));
+    });
+
+    document.querySelectorAll('.notes-delete-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (confirm('Tem certeza que deseja excluir essa anotação?')) {
+          const notes = getNotes();
+          const filtered = notes.filter(n => n.id !== parseInt(btn.dataset.id));
+          localStorage.setItem(notesStorageKey, JSON.stringify(filtered));
+          renderNotes();
+        }
+      });
+    });
+  }
+}
+
+function getNotes() {
+  try {
+    return JSON.parse(localStorage.getItem(notesStorageKey)) || [];
+  } catch {
+    return [];
+  }
 }
 
 /* ══════════════════════════════════════════════════════

@@ -26,11 +26,18 @@
           <a href="disciplinas.html" class="sidebar__link sidebar__link--toggle" data-label="Disciplinas"><i data-lucide="book-open"></i><span>Disciplinas</span><i data-lucide="chevron-down" class="sidebar__chevron"></i></a>
           <ul class="sidebar__sublist" id="disciplinasSub">
             <li class="sidebar__subitem sidebar__subitem--active"><a href="#" class="sidebar__sublink">Matemática</a></li>
-            <li class="sidebar__subitem"><a href="#" class="sidebar__sublink">História</a></li>
-            <li class="sidebar__subitem"><a href="#" class="sidebar__sublink">Biologia</a></li>
-            <li class="sidebar__subitem"><a href="#" class="sidebar__sublink">Redação</a></li>
             <li class="sidebar__subitem"><a href="#" class="sidebar__sublink">Física</a></li>
             <li class="sidebar__subitem"><a href="#" class="sidebar__sublink">Química</a></li>
+            <li class="sidebar__subitem"><a href="#" class="sidebar__sublink">Biologia</a></li>
+            <li class="sidebar__subitem"><a href="#" class="sidebar__sublink">História</a></li>
+            <li class="sidebar__subitem"><a href="#" class="sidebar__sublink">Geografia</a></li>
+            <li class="sidebar__subitem"><a href="#" class="sidebar__sublink">Filosofia</a></li>
+            <li class="sidebar__subitem"><a href="#" class="sidebar__sublink">Sociologia</a></li>
+            <li class="sidebar__subitem"><a href="#" class="sidebar__sublink">Redação</a></li>
+            <li class="sidebar__subitem"><a href="#" class="sidebar__sublink">Português</a></li>
+            <li class="sidebar__subitem"><a href="#" class="sidebar__sublink">Inglês</a></li>
+            <li class="sidebar__subitem"><a href="#" class="sidebar__sublink">Gramática</a></li>
+            <li class="sidebar__subitem"><a href="#" class="sidebar__sublink">Literatura</a></li>
           </ul>
         </li>
         <li class="sidebar__item"><a href="flashcards.html" class="sidebar__link" data-label="Flashcards"><i data-lucide="layers"></i><span>Flashcards</span></a></li>
@@ -71,7 +78,24 @@
         <h1 class="content__title">Disciplinas</h1>
         <p class="content__subline">Acompanhe o progresso de cada matéria.</p>
       </div>
-      <section class="summary-cards">
+
+      <!-- Recomendação Semanal -->
+      <section class="weekly-recommendation">
+        <div class="weekly-recommendation__content">
+          <div class="weekly-recommendation__icon">🎯</div>
+          <div class="weekly-recommendation__text">
+            <p class="weekly-recommendation__label">Recomendação de Estudo</p>
+            <h3 class="weekly-recommendation__title">Continue com Física</h3>
+            <p class="weekly-recommendation__desc">Você está com 30% de progresso. Pratique mais 2-3 tópicos para atingir 50%.</p>
+          </div>
+          <button class="weekly-recommendation__btn">Estudar Agora</button>
+        </div>
+      </section>
+
+      <!-- Disciplinas por Categoria -->
+      <section class="disciplines-section">
+        <h2 class="disciplines-section__title">Ciências Naturais 🔬</h2>
+        <div class="summary-cards">
         <article class="summary-card">
           <div class="summary-card__header"><span class="summary-card__label">Matemática</span></div>
           <div class="summary-card__progress-wrap">
@@ -79,24 +103,6 @@
             <span class="summary-card__progress-pct">65%</span>
           </div>
           <p class="summary-card__sub">Em progresso · Faltam 35%</p>
-        </article>
-
-        <article class="summary-card">
-          <div class="summary-card__header"><span class="summary-card__label">História</span></div>
-          <div class="summary-card__progress-wrap">
-            <div class="summary-card__progress-bar"><div class="summary-card__progress-fill" style="width: 40%;"></div></div>
-            <span class="summary-card__progress-pct">40%</span>
-          </div>
-          <p class="summary-card__sub">Em progresso · Faltam 60%</p>
-        </article>
-
-        <article class="summary-card">
-          <div class="summary-card__header"><span class="summary-card__label">Português</span></div>
-          <div class="summary-card__progress-wrap">
-            <div class="summary-card__progress-bar"><div class="summary-card__progress-fill" style="width: 80%;"></div></div>
-            <span class="summary-card__progress-pct">80%</span>
-          </div>
-          <p class="summary-card__sub">Em progresso · Faltam 20%</p>
         </article>
 
         <article class="summary-card">
@@ -125,6 +131,100 @@
           </div>
           <p class="summary-card__sub">Em progresso · Faltam 30%</p>
         </article>
+        </div>
+      </section>
+
+      <!-- Ciências Humanas -->
+      <section class="disciplines-section">
+        <h2 class="disciplines-section__title">Ciências Humanas 📚</h2>
+        <div class="summary-cards">
+        <article class="summary-card">
+          <div class="summary-card__header"><span class="summary-card__label">História</span></div>
+          <div class="summary-card__progress-wrap">
+            <div class="summary-card__progress-bar"><div class="summary-card__progress-fill" style="width: 40%;"></div></div>
+            <span class="summary-card__progress-pct">40%</span>
+          </div>
+          <p class="summary-card__sub">Em progresso · Faltam 60%</p>
+        </article>
+
+        <article class="summary-card">
+          <div class="summary-card__header"><span class="summary-card__label">Geografia</span></div>
+          <div class="summary-card__progress-wrap">
+            <div class="summary-card__progress-bar"><div class="summary-card__progress-fill" style="width: 45%;"></div></div>
+            <span class="summary-card__progress-pct">45%</span>
+          </div>
+          <p class="summary-card__sub">Em progresso · Faltam 55%</p>
+        </article>
+
+        <article class="summary-card">
+          <div class="summary-card__header"><span class="summary-card__label">Filosofia</span></div>
+          <div class="summary-card__progress-wrap">
+            <div class="summary-card__progress-bar"><div class="summary-card__progress-fill" style="width: 35%;"></div></div>
+            <span class="summary-card__progress-pct">35%</span>
+          </div>
+          <p class="summary-card__sub">Em progresso · Faltam 65%</p>
+        </article>
+
+        <article class="summary-card">
+          <div class="summary-card__header"><span class="summary-card__label">Sociologia</span></div>
+          <div class="summary-card__progress-wrap">
+            <div class="summary-card__progress-bar"><div class="summary-card__progress-fill" style="width: 50%;"></div></div>
+            <span class="summary-card__progress-pct">50%</span>
+          </div>
+          <p class="summary-card__sub">Em progresso · Faltam 50%</p>
+        </article>
+        </div>
+      </section>
+
+      <!-- Linguagens e Códigos -->
+      <section class="disciplines-section">
+        <h2 class="disciplines-section__title">Linguagens e Códigos 🗣️</h2>
+        <div class="summary-cards">
+        <article class="summary-card">
+          <div class="summary-card__header"><span class="summary-card__label">Português</span></div>
+          <div class="summary-card__progress-wrap">
+            <div class="summary-card__progress-bar"><div class="summary-card__progress-fill" style="width: 80%;"></div></div>
+            <span class="summary-card__progress-pct">80%</span>
+          </div>
+          <p class="summary-card__sub">Em progresso · Faltam 20%</p>
+        </article>
+
+        <article class="summary-card">
+          <div class="summary-card__header"><span class="summary-card__label">Redação</span></div>
+          <div class="summary-card__progress-wrap">
+            <div class="summary-card__progress-bar"><div class="summary-card__progress-fill" style="width: 75%;"></div></div>
+            <span class="summary-card__progress-pct">75%</span>
+          </div>
+          <p class="summary-card__sub">Em progresso · Faltam 25%</p>
+        </article>
+
+        <article class="summary-card">
+          <div class="summary-card__header"><span class="summary-card__label">Inglês</span></div>
+          <div class="summary-card__progress-wrap">
+            <div class="summary-card__progress-bar"><div class="summary-card__progress-fill" style="width: 60%;"></div></div>
+            <span class="summary-card__progress-pct">60%</span>
+          </div>
+          <p class="summary-card__sub">Em progresso · Faltam 40%</p>
+        </article>
+
+        <article class="summary-card">
+          <div class="summary-card__header"><span class="summary-card__label">Gramática</span></div>
+          <div class="summary-card__progress-wrap">
+            <div class="summary-card__progress-bar"><div class="summary-card__progress-fill" style="width: 58%;"></div></div>
+            <span class="summary-card__progress-pct">58%</span>
+          </div>
+          <p class="summary-card__sub">Em progresso · Faltam 42%</p>
+        </article>
+
+        <article class="summary-card">
+          <div class="summary-card__header"><span class="summary-card__label">Literatura</span></div>
+          <div class="summary-card__progress-wrap">
+            <div class="summary-card__progress-bar"><div class="summary-card__progress-fill" style="width: 72%;"></div></div>
+            <span class="summary-card__progress-pct">72%</span>
+          </div>
+          <p class="summary-card__sub">Em progresso · Faltam 28%</p>
+        </article>
+        </div>
       </section>
     </main>
   </div>

@@ -25,11 +25,18 @@
         <li class="sidebar__item sidebar__item--has-sub" id="disciplinasToggle"><a href="disciplinas.html" class="sidebar__link sidebar__link--toggle" data-label="Disciplinas"><i data-lucide="book-open"></i><span>Disciplinas</span><i data-lucide="chevron-down" class="sidebar__chevron"></i></a>
           <ul class="sidebar__sublist" id="disciplinasSub">
             <li class="sidebar__subitem"><a href="#" class="sidebar__sublink">Matemática</a></li>
-            <li class="sidebar__subitem"><a href="#" class="sidebar__sublink">História</a></li>
-            <li class="sidebar__subitem"><a href="#" class="sidebar__sublink">Biologia</a></li>
-            <li class="sidebar__subitem"><a href="#" class="sidebar__sublink">Redação</a></li>
             <li class="sidebar__subitem"><a href="#" class="sidebar__sublink">Física</a></li>
             <li class="sidebar__subitem"><a href="#" class="sidebar__sublink">Química</a></li>
+            <li class="sidebar__subitem"><a href="#" class="sidebar__sublink">Biologia</a></li>
+            <li class="sidebar__subitem"><a href="#" class="sidebar__sublink">História</a></li>
+            <li class="sidebar__subitem"><a href="#" class="sidebar__sublink">Geografia</a></li>
+            <li class="sidebar__subitem"><a href="#" class="sidebar__sublink">Filosofia</a></li>
+            <li class="sidebar__subitem"><a href="#" class="sidebar__sublink">Sociologia</a></li>
+            <li class="sidebar__subitem"><a href="#" class="sidebar__sublink">Redação</a></li>
+            <li class="sidebar__subitem"><a href="#" class="sidebar__sublink">Português</a></li>
+            <li class="sidebar__subitem"><a href="#" class="sidebar__sublink">Inglês</a></li>
+            <li class="sidebar__subitem"><a href="#" class="sidebar__sublink">Gramática</a></li>
+            <li class="sidebar__subitem"><a href="#" class="sidebar__sublink">Literatura</a></li>
           </ul>
         </li>
         <li class="sidebar__item"><a href="flashcards.html" class="sidebar__link" data-label="Flashcards"><i data-lucide="layers"></i><span>Flashcards</span></a></li>
@@ -68,26 +75,92 @@
       <div class="content__greeting">
         <p class="content__date">Hoje: Quinta-feira, 10 de Março de 2026</p>
         <h1 class="content__title">Anotações</h1>
+        <p class="content__subline">Organize suas anotações por disciplina e nunca perca um detalhe importante.</p>
       </div>
-      <section class="summary-cards">
-        <article class="summary-card summary-card--primary">
-          <div class="summary-card__header"><span class="summary-card__label">Redação</span></div>
-          <p class="summary-card__sub">Tese forte, argumentos claros e proposta de intervenção objetiva.</p>
-        </article>
-        <article class="summary-card summary-card--teal">
-          <div class="summary-card__header"><span class="summary-card__label">Matemática</span></div>
-          <p class="summary-card__sub">Relembrar derivadas, funções quadráticas e sistemas lineares.</p>
-        </article>
-        <article class="summary-card summary-card--warm">
-          <div class="summary-card__header"><span class="summary-card__label">História</span></div>
-          <p class="summary-card__sub">Foco: Era Vargas, Constituição de 1988 e Regime Militar.</p>
-        </article>
-        <article class="summary-card summary-card--blue">
-          <div class="summary-card__header"><span class="summary-card__label">Biologia</span></div>
-          <p class="summary-card__sub">Ciclos biogeoquímicos, genética e ecologia para prova.</p>
-        </article>
+
+      <!-- Controls Section -->
+      <section class="notes-controls">
+        <div class="notes-controls__left">
+          <div class="notes-search">
+            <i data-lucide="search"></i>
+            <input type="text" id="notesSearchInput" placeholder="Pesquisar anotações..." />
+          </div>
+          <select id="notesFilterDiscipline" class="notes-filter">
+            <option value="">Todas as disciplinas</option>
+            <option value="Matemática">Matemática</option>
+            <option value="Física">Física</option>
+            <option value="Química">Química</option>
+            <option value="Biologia">Biologia</option>
+            <option value="História">História</option>
+            <option value="Geografia">Geografia</option>
+            <option value="Filosofia">Filosofia</option>
+            <option value="Sociologia">Sociologia</option>
+            <option value="Português">Português</option>
+            <option value="Redação">Redação</option>
+            <option value="Inglês">Inglês</option>
+            <option value="Gramática">Gramática</option>
+            <option value="Literatura">Literatura</option>
+          </select>
+        </div>
+        <button id="newNoteBtn" class="btn-new-note">
+          <i data-lucide="plus"></i> Nova Anotação
+        </button>
+      </section>
+
+      <!-- Notes List -->
+      <section class="notes-section">
+        <div id="notesList" class="notes-grid"></div>
+        <div id="notesEmpty" class="notes-empty" style="display: none;">
+          <p class="notes-empty__icon">📝</p>
+          <p class="notes-empty__text">Você não tem anotações ainda.</p>
+          <p class="notes-empty__subtext">Clique em "Nova Anotação" para começar!</p>
+        </div>
       </section>
     </main>
+
+    <!-- Modal Nova Anotação -->
+    <div id="noteModal" class="modal" style="display: none;">
+      <div class="modal__overlay" id="modalOverlay"></div>
+      <div class="modal__content">
+        <div class="modal__header">
+          <h2 id="modalTitle">Nova Anotação</h2>
+          <button class="modal__close" id="modalCloseBtn">&times;</button>
+        </div>
+        <form id="noteForm" class="modal__form">
+          <div class="form-group">
+            <label for="noteTitle">Título da Anotação</label>
+            <input type="text" id="noteTitle" placeholder="Ex: Fórmulas de Trigonometria" required />
+          </div>
+          <div class="form-group">
+            <label for="noteDiscipline">Disciplina</label>
+            <select id="noteDiscipline" required>
+              <option value="">Selecione uma disciplina</option>
+              <option value="Matemática">Matemática</option>
+              <option value="Física">Física</option>
+              <option value="Química">Química</option>
+              <option value="Biologia">Biologia</option>
+              <option value="História">História</option>
+              <option value="Geografia">Geografia</option>
+              <option value="Filosofia">Filosofia</option>
+              <option value="Sociologia">Sociologia</option>
+              <option value="Português">Português</option>
+              <option value="Redação">Redação</option>
+              <option value="Inglês">Inglês</option>
+              <option value="Gramática">Gramática</option>
+              <option value="Literatura">Literatura</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="noteContent">Anotação</label>
+            <textarea id="noteContent" placeholder="Digite sua anotação aqui..." rows="6" required></textarea>
+          </div>
+          <div class="modal__actions">
+            <button type="button" class="btn-secondary" id="modalCancelBtn">Cancelar</button>
+            <button type="submit" class="btn-primary">Salvar Anotação</button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
   <script src="script.js"></script>
 </body>
