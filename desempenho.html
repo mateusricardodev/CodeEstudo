@@ -71,25 +71,35 @@
       </div>
       <section class="summary-cards">
         <article class="summary-card summary-card--primary">
-          <div class="summary-card__header"><span class="summary-card__label">Progresso Geral</span></div>
-          <div class="summary-card__value">72%</div>
-          <p class="summary-card__sub">Baseado no total de atividades e revisões concluídas nesta semana.</p>
+          <div class="summary-card__header"><span class="summary-card__label">Taxa de Acerto</span></div>
+          <div class="summary-card__value" id="overallAccuracyValue">0%</div>
+          <p class="summary-card__sub">Média de acertos em todas as disciplinas respondidas.</p>
         </article>
         <article class="summary-card summary-card--teal">
-          <div class="summary-card__header"><span class="summary-card__label">Horas Estudadas</span></div>
-          <div class="summary-card__value">28h</div>
-          <p class="summary-card__sub">Tempo total registrado em sessões de estudo nas últimas 7 dias.</p>
+          <div class="summary-card__header"><span class="summary-card__label">Questões Respondidas</span></div>
+          <div class="summary-card__value" id="totalAttemptsValue">0</div>
+          <p class="summary-card__sub">Total de questões finalizadas no banco de questões.</p>
         </article>
         <article class="summary-card summary-card--warm">
-          <div class="summary-card__header"><span class="summary-card__label">Taxa de Conclusão</span></div>
-          <div class="summary-card__value">86%</div>
-          <p class="summary-card__sub">Percentual de tarefas e leituras que você concluiu até o momento.</p>
+          <div class="summary-card__header"><span class="summary-card__label">Acertos Totais</span></div>
+          <div class="summary-card__value" id="totalCorrectValue">0</div>
+          <p class="summary-card__sub">Contagem total de respostas corretas.</p>
         </article>
         <article class="summary-card summary-card--blue">
-          <div class="summary-card__header"><span class="summary-card__label">Média de Acertos</span></div>
-          <div class="summary-card__value">81%</div>
-          <p class="summary-card__sub">Média de acertos em questões de revisão e simulados recentes.</p>
+          <div class="summary-card__header"><span class="summary-card__label">Erros Totais</span></div>
+          <div class="summary-card__value" id="totalWrongValue">0</div>
+          <p class="summary-card__sub">Contagem total de respostas incorretas.</p>
         </article>
+      </section>
+
+      <section class="performance-panel">
+        <div class="performance-panel__header">
+          <div>
+            <h2 class="performance-panel__title">Desempenho por disciplina</h2>
+            <p class="performance-panel__meta">Veja como você está se saindo nas diferentes matérias.</p>
+          </div>
+        </div>
+        <div class="performance-grid" id="performanceGrid"></div>
       </section>
 
       <section class="chart-panel">

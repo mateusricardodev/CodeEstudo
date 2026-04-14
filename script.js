@@ -23,6 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initProPlanLinks();
   initCalendarQuickActions();
   initFlashcardReview();
+  initQuestionSystem();
+  initPerformanceDashboard();
   renderSchedule();
   initCheckboxes();
 });
@@ -277,11 +279,710 @@ function initFlashcardReview() {
   });
 }
 
-/* ══════════════════════════════════════════════════════
-   6. SCHEDULE – DADOS E RENDERIZAÇÃO
-══════════════════════════════════════════════════════ */
+const performanceStorageKey = 'cronoQuestPerformance';
+const QUESTIONS = [
+  {
+    enunciado: 'Em uma prova do ENEM, uma aluna resolve a equação 2x + 3 = 11. Qual é o valor de x?',
+    alternativas: {
+      A: '2',
+      B: '3',
+      C: '4',
+      D: '5',
+      E: '6'
+    },
+    correta: 'C',
+    explicacao: 'Resolvendo 2x + 3 = 11 temos 2x = 8, portanto x = 4.',
+    disciplina: 'Matemática'
+  },
+  {
+    enunciado: 'Qual foi uma das principais causas da Independência do Brasil em 1822?',
+    alternativas: {
+      A: 'A Revolução Industrial na Inglaterra.',
+      B: 'A cobrança de altos impostos pelo Reino Unido da França.',
+      C: 'A insatisfação com as políticas de exploração e controle econômico de Portugal.',
+      D: 'A influência política dos Estados Unidos.',
+      E: 'A expansão do comunismo na América do Sul.'
+    },
+    correta: 'C',
+    explicacao: 'A Independência do Brasil está ligada à insatisfação com as políticas econômicas e o controle político de Portugal.',
+    disciplina: 'História'
+  },
+  {
+    enunciado: 'Qual é a função principal do DNA em uma célula?',
+    alternativas: {
+      A: 'Produzir energia para a célula.',
+      B: 'Transportar oxigênio pelo organismo.',
+      C: 'Armazenar e transmitir a informação genética.',
+      D: 'Eliminar substâncias tóxicas.',
+      E: 'Regular a temperatura corporal.'
+    },
+    correta: 'C',
+    explicacao: 'O DNA contém o código genético responsável por armazenar e transmitir informação hereditária.',
+    disciplina: 'Biologia'
+  },
+  {
+    enunciado: 'Em uma reação de oxirredução, o que ocorre?',
+    alternativas: {
+      A: 'Apenas liberação de calor.',
+      B: 'Perda de elétrons por uma substância e ganho por outra.',
+      C: 'Formação de ligações iônicas apenas.',
+      D: 'Transformação de um ácido em uma base.',
+      E: 'Apenas mudança de fase.'
+    },
+    correta: 'B',
+    explicacao: 'Oxirredução envolve transferência de elétrons: uma substância oxida-se e outra reduz-se.',
+    disciplina: 'Química'
+  },
+  {
+    enunciado: 'Qual é a solução para a inequação x² - 5x + 6 < 0?',
+    alternativas: {
+      A: 'x < 2 ou x > 3',
+      B: '2 < x < 3',
+      C: 'x < 3',
+      D: 'x > 2',
+      E: 'x = 2 ou x = 3'
+    },
+    correta: 'B',
+    explicacao: 'Fatorando: (x-2)(x-3) < 0. O produto é negativo quando os fatores têm sinais opostos, logo 2 < x < 3.',
+    disciplina: 'Matemática'
+  },
+  {
+    enunciado: 'Se um produto custa R$ 100,00 e sofre um aumento de 20%, qual será o novo preço?',
+    alternativas: {
+      A: 'R$ 80,00',
+      B: 'R$ 100,00',
+      C: 'R$ 120,00',
+      D: 'R$ 140,00',
+      E: 'R$ 150,00'
+    },
+    correta: 'C',
+    explicacao: 'Aumento de 20% sobre R$ 100 = 100 + (100 × 0,20) = 100 + 20 = R$ 120,00',
+    disciplina: 'Matemática'
+  },
+  {
+    enunciado: 'Qual é a área de um círculo com raio de 5 cm?',
+    alternativas: {
+      A: '10π cm²',
+      B: '15π cm²',
+      C: '25π cm²',
+      D: '50π cm²',
+      E: '100π cm²'
+    },
+    correta: 'C',
+    explicacao: 'A área de um círculo é A = πr². Com r = 5, temos A = π(5)² = 25π cm².',
+    disciplina: 'Matemática'
+  },
+  {
+    enunciado: 'Em uma progressão aritmética, o primeiro termo é 3 e a razão é 5. Qual é o 10º termo?',
+    alternativas: {
+      A: '40',
+      B: '48',
+      C: '50',
+      D: '52',
+      E: '55'
+    },
+    correta: 'B',
+    explicacao: 'usando an = a1 + (n-1)r. a10 = 3 + (10-1)×5 = 3 + 45 = 48',
+    disciplina: 'Matemática'
+  },
+  {
+    enunciado: 'Uma empresa produz 1.000 unidades por dia. Quantas unidades são produzidas em um mês de 30 dias?',
+    alternativas: {
+      A: '10.000',
+      B: '20.000',
+      C: '30.000',
+      D: '40.000',
+      E: '50.000'
+    },
+    correta: 'C',
+    explicacao: '1.000 unidades/dia × 30 dias = 30.000 unidades',
+    disciplina: 'Matemática'
+  },
+  {
+    enunciado: 'Qual imperador assinou a Lei Áurea em 13 de maio de 1888?',
+    alternativas: {
+      A: 'Dom Pedro I',
+      B: 'Dom Pedro II',
+      C: 'Dom João VI',
+      D: 'Getúlio Vargas',
+      E: 'Tiradentes'
+    },
+    correta: 'B',
+    explicacao: 'Dom Pedro II assinou a Lei Áurea que aboliu a escravidão no Brasil em 1888.',
+    disciplina: 'História'
+  },
+  {
+    enunciado: 'Qual período ficou conhecido como Revolução Francesa?',
+    alternativas: {
+      A: '1656-1660',
+      B: '1689-1697',
+      C: '1789-1799',
+      D: '1820-1835',
+      E: '1860-1880'
+    },
+    correta: 'C',
+    explicacao: 'A Revolução Francesa ocorreu entre 1789 e 1799, marcando transformações políticas e sociais na Europa.',
+    disciplina: 'História'
+  },
+  {
+    enunciado: 'Qual foi a consequência imediata do acidente de Chernobyl em 1986?',
+    alternativas: {
+      A: 'Aumento da produção de energia nuclear globalmente.',
+      B: 'Evacuação de cidades e contaminação radioativa em larga escala.',
+      C: 'Desenvolvimento de novas tecnologias nucleares.',
+      D: 'Reforço da indústria de carvão na Europa.',
+      E: 'Criação da União Europeia.'
+    },
+    correta: 'B',
+    explicacao: 'O acidente de Chernobyl causou evacuação de cidades como Pripyat e contaminação radioativa que afetou vários países.',
+    disciplina: 'História'
+  },
+  {
+    enunciado: 'Qual das seguintes é uma característica da Idade Média europeia?',
+    alternativas: {
+      A: 'Centralização do poder nas mãos do rei.',
+      B: 'Sistema feudal com vassalagem e servidão.',
+      C: 'Desenvolvimento de democracias atenienses.',
+      D: 'Expansão do Império Romano.',
+      E: 'Industrialização em larga escala.'
+    },
+    correta: 'B',
+    explicacao: 'A Idade Média foi caracterizada pelo sistema feudal, com relações de vassalagem e servidão entre senhores e camponeses.',
+    disciplina: 'História'
+  },
+  {
+    enunciado: 'O processo de respiração celular ocorre principalmente onde?',
+    alternativas: {
+      A: 'No ribossomo',
+      B: 'Na mitocôndria',
+      C: 'No núcleo',
+      D: 'Na membrana celular',
+      E: 'No retículo endoplasmático'
+    },
+    correta: 'B',
+    explicacao: 'A respiração celular, especialmente a fosforilação oxidativa, ocorre nas mitocôndrias.',
+    disciplina: 'Biologia'
+  },
+  {
+    enunciado: 'Qual é o nome do processo em que plantas convertem luz solar em energia química?',
+    alternativas: {
+      A: 'Respiração',
+      B: 'Fermentação',
+      C: 'Fotossíntese',
+      D: 'Osmose',
+      E: 'Difusão'
+    },
+    correta: 'C',
+    explicacao: 'A fotossíntese é o processo em que as plantas usam luz solar, água e dióxido de carbono para produzir glicose e oxigênio.',
+    disciplina: 'Biologia'
+  },
+  {
+    enunciado: 'Quantos pares de cromossomos os humanos têm?',
+    alternativas: {
+      A: '10',
+      B: '19',
+      C: '23',
+      D: '46',
+      E: '50'
+    },
+    correta: 'C',
+    explicacao: 'Os humanos têm 23 pares de cromossomos (46 no total) - 22 pares de autossomos e 1 par de cromossomos sexuais.',
+    disciplina: 'Biologia'
+  },
+  {
+    enunciado: 'Qual é o órgão responsável pela filtragem do sangue no corpo humano?',
+    alternativas: {
+      A: 'Coração',
+      B: 'Pulmão',
+      C: 'Rim',
+      D: 'Fígado',
+      E: 'Pâncreas'
+    },
+    correta: 'C',
+    explicacao: 'Os rins são responsáveis pela filtragem do sangue, removendo resíduos e formando a urina.',
+    disciplina: 'Biologia'
+  },
+  {
+    enunciado: 'Qual é o pH de uma solução neutra?',
+    alternativas: {
+      A: '0',
+      B: '5',
+      C: '7',
+      D: '10',
+      E: '14'
+    },
+    correta: 'C',
+    explicacao: 'Uma solução neutra tem pH 7, onde [H+] = [OH-] = 10^-7 mol/L.',
+    disciplina: 'Química'
+  },
+  {
+    enunciado: 'Quantas moléculas de água têm massa total de 36 gramas? (Massa molar da água = 18 g/mol)',
+    alternativas: {
+      A: '6,02 × 10²²',
+      B: '1,20 × 10²⁴',
+      C: '2,4 × 10²⁴',
+      D: '3,6 × 10²³',
+      E: '7,2 × 10²³'
+    },
+    correta: 'B',
+    explicacao: '36g ÷ 18 g/mol = 2 mol. 2 mol × 6,02×10²³ = 1,20×10²⁴ moléculas.',
+    disciplina: 'Química'
+  },
+  {
+    enunciado: 'Qual tipo de ligação química mantém os átomos de uma molécula de H₂ unidos?',
+    alternativas: {
+      A: 'Ligação iônica',
+      B: 'Ligação covalente',
+      C: 'Ligação metálica',
+      D: 'Ligação de hidrogênio',
+      E: 'Força de Van der Waals'
+    },
+    correta: 'B',
+    explicacao: 'A molécula H₂ é mantida unida por uma ligação covalente, onde os dois átomos de hidrogênio compartilham um par de elétrons.',
+    disciplina: 'Química'
+  },
+  {
+    enunciado: 'Em qual temperatura a água muda de estado de líquido para gasoso (pressão atmosférica normal)?',
+    alternativas: {
+      A: '0°C',
+      B: '50°C',
+      C: '100°C',
+      D: '150°C',
+      E: '200°C'
+    },
+    correta: 'C',
+    explicacao: 'A água ferve a 100°C em pressão atmosférica normal (1 atm).',
+    disciplina: 'Química'
+  },
+  {
+    enunciado: 'Qual é uma estratégia eficaz para elaborar a introdução de uma redação?',
+    alternativas: {
+      A: 'Contar uma história muito longa sobre sua vida.',
+      B: 'Apresentar o tema de forma clara e relevante, indicando os pontos a serem discutidos.',
+      C: 'Usar apenas perguntas retóricas.',
+      D: 'Copiar trechos de textos famosos.',
+      E: 'Escrever de forma poética e confusa.'
+    },
+    correta: 'B',
+    explicacao: 'Uma boa introdução apresenta o tema de forma clara, relevante e indica o caminho da argumentação.',
+    disciplina: 'Redação'
+  },
+  {
+    enunciado: 'Qual desses elementos não é recomendado em uma redação argumentativa?',
+    alternativas: {
+      A: 'Argumentos com dados e evidências.',
+      B: 'Citações de especialistas ou pesquisas.',
+      C: 'Opinião pessoal sem fundamentação.',
+      D: 'Análise crítica do tema.',
+      E: 'Estrutura clara com introdução, desenvolvimento e conclusão.'
+    },
+    correta: 'C',
+    explicacao: 'Opiniões sem fundamentação enfraquecem a argumentação. É essencial usar evidências e dados.',
+    disciplina: 'Redação'
+  },
+  {
+    enunciado: 'Qual é a função das coesões em um texto?',
+    alternativas: {
+      A: 'Aumentar o número de palavras.',
+      B: 'Conectar ideias e estabelecer relações lógicas entre as partes do texto.',
+      C: 'Substituir o uso de pontuação.',
+      D: 'Tornar o texto mais difícil de entender.',
+      E: 'Eliminar a necessidade de coerência.'
+    },
+    correta: 'B',
+    explicacao: 'As coesões conectam ideias através de palavras e expressões, garantindo fluidez e clareza no texto.',
+    disciplina: 'Redação'
+  },
+  {
+    enunciado: 'Qual conceito é fundamental para manter a qualidade de uma redação do ENEM?',
+    alternativas: {
+      A: 'Usar palavras raras e complicadas.',
+      B: 'Coerência entre as ideias apresentadas.',
+      C: 'Escrever sem estrutura para parecer criativo.',
+      D: 'Repetir a mesma informação várias vezes.',
+      E: 'Ignorar o tema proposto.'
+    },
+    correta: 'B',
+    explicacao: 'A coerência garante que as ideias façam sentido lógico e estejam bem conectadas ao tema.',
+    disciplina: 'Redação'
+  },
+  {
+    enunciado: 'Qual é a velocidade da luz no vácuo?',
+    alternativas: {
+      A: '3 × 10⁶ m/s',
+      B: '3 × 10⁷ m/s',
+      C: '3 × 10⁸ m/s',
+      D: '3 × 10⁹ m/s',
+      E: '3 × 10¹⁰ m/s'
+    },
+    correta: 'C',
+    explicacao: 'A velocidade da luz no vácuo é aproximadamente 3 × 10⁸ m/s ou 300.000 km/s.',
+    disciplina: 'Física'
+  },
+  {
+    enunciado: 'A Segunda Lei de Newton estabelece que:',
+    alternativas: {
+      A: 'Para toda ação há uma reação igual e oposta.',
+      B: 'A força é igual à massa multiplicada pela aceleração (F = ma).',
+      C: 'A aceleração é inversamente proporcional ao tempo.',
+      D: 'Todo objeto em repouso permanece em repouso infinitamente.',
+      E: 'A energia não pode ser criada nem destruída, mas transformada.'
+    },
+    correta: 'B',
+    explicacao: 'A Segunda Lei de Newton (F = ma) relaciona força, massa e aceleração.',
+    disciplina: 'Física'
+  },
+  {
+    enunciado: 'Qual é a unidade de medida da energia no Sistema Internacional?',
+    alternativas: {
+      A: 'Newton (N)',
+      B: 'Watt (W)',
+      C: 'Joule (J)',
+      D: 'Pascal (Pa)',
+      E: 'Hertz (Hz)'
+    },
+    correta: 'C',
+    explicacao: 'O Joule (J) é a unidade de energia no SI, equivalente a 1 N·m.',
+    disciplina: 'Física'
+  },
+  {
+    enunciado: 'Um objeto com massa de 10 kg é acelerado a 5 m/s². Qual é a força aplicada?',
+    alternativas: {
+      A: '15 N',
+      B: '30 N',
+      C: '50 N',
+      D: '75 N',
+      E: '100 N'
+    },
+    correta: 'C',
+    explicacao: 'Usando F = ma, temos F = 10 kg × 5 m/s² = 50 N.',
+    disciplina: 'Física'
+  },
+  {
+    enunciado: 'Qual tipo de espelho produz uma imagem sempre virtual, direita e menor?',
+    alternativas: {
+      A: 'Espelho plano',
+      B: 'Espelho côncavo',
+      C: 'Espelho convexo',
+      D: 'Espelho parabólico',
+      E: 'Espelho cilíndrico'
+    },
+    correta: 'C',
+    explicacao: 'O espelho convexo (divergente) sempre produz imagens virtuais, direitas e menores que o objeto.',
+    disciplina: 'Física'
+  }
+];
 
-/** Dados da semana – cada dia tem um array de blocos */
+let currentQuestionIndex = 0;
+let currentDiscipline = '';
+let currentQuestionSet = [];
+let correctCount = 0;
+let wrongCount = 0;
+let quizFinished = false;
+let questionAnswered = false;
+
+function initQuestionSystem() {
+  const disciplineSelection = document.getElementById('disciplineSelection');
+  const questionPanel = document.getElementById('questionPanel');
+  const backButton = document.getElementById('backButton');
+  
+  if (backButton) {
+    backButton.addEventListener('click', () => {
+      currentQuestionIndex = 0;
+      correctCount = 0;
+      wrongCount = 0;
+      questionAnswered = false;
+      quizFinished = false;
+      updateScoreDisplay();
+      disciplineSelection.style.display = 'block';
+      questionPanel.style.display = 'none';
+    });
+  }
+
+  renderDisciplineSelection();
+
+  const nextButton = document.getElementById('nextQuestionButton');
+  nextButton?.addEventListener('click', handleNextQuestion);
+}
+
+function renderDisciplineSelection() {
+  const disciplineGrid = document.getElementById('disciplineGrid');
+  if (!disciplineGrid) return;
+
+  const disciplines = getAvailableDisciplines();
+  disciplineGrid.innerHTML = disciplines.map((disciplina) => `
+    <button type="button" class="discipline-card" data-discipline="${disciplina}">
+      <span class="discipline-card__icon"></span>
+      <span class="discipline-card__name">${disciplina}</span>
+      <span class="discipline-card__count">${QUESTIONS.filter((q) => q.disciplina === disciplina).length} questões</span>
+    </button>
+  `).join('');
+
+  disciplineGrid.querySelectorAll('.discipline-card').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      currentDiscipline = btn.dataset.discipline;
+      correctCount = 0;
+      wrongCount = 0;
+      currentQuestionIndex = 0;
+      updateScoreDisplay();
+      renderQuestionSet();
+      
+      document.getElementById('disciplineSelection').style.display = 'none';
+      document.getElementById('questionPanel').style.display = 'block';
+    });
+  });
+}
+
+function getAvailableDisciplines() {
+  return [...new Set(QUESTIONS.map((question) => question.disciplina))];
+}
+
+function renderQuestionSet() {
+  currentQuestionSet = QUESTIONS.filter((question) => question.disciplina === currentDiscipline);
+  currentQuestionIndex = 0;
+  renderQuestion();
+}
+
+function getPerformanceData() {
+  try {
+    return JSON.parse(localStorage.getItem(performanceStorageKey)) || {};
+  } catch {
+    return {};
+  }
+}
+
+function savePerformanceData(discipline, correct, wrong, total) {
+  const data = getPerformanceData();
+  const existing = data[discipline] || { attempts: 0, correct: 0, wrong: 0, total: 0, accuracy: 0 };
+  existing.attempts += 1;
+  existing.correct += correct;
+  existing.wrong += wrong;
+  existing.total += total;
+  existing.accuracy = existing.total > 0 ? Math.round((existing.correct / existing.total) * 100) : 0;
+  existing.lastUpdated = new Date().toISOString();
+  data[discipline] = existing;
+  localStorage.setItem(performanceStorageKey, JSON.stringify(data));
+}
+
+function initPerformanceDashboard() {
+  const overallAccuracyValue = document.getElementById('overallAccuracyValue');
+  const totalAttemptsValue = document.getElementById('totalAttemptsValue');
+  const totalCorrectValue = document.getElementById('totalCorrectValue');
+  const totalWrongValue = document.getElementById('totalWrongValue');
+  const performanceGrid = document.getElementById('performanceGrid');
+  const performanceData = getPerformanceData();
+
+  if (!overallAccuracyValue && !performanceGrid) return;
+
+  let overallCorrect = 0;
+  let overallTotal = 0;
+  let overallWrong = 0;
+  let overallAttempts = 0;
+
+  Object.values(performanceData).forEach((summary) => {
+    overallCorrect += summary.correct;
+    overallWrong += summary.wrong;
+    overallTotal += summary.total;
+    overallAttempts += summary.attempts;
+  });
+
+  const accuracy = overallTotal > 0 ? Math.round((overallCorrect / overallTotal) * 100) : 0;
+
+  if (overallAccuracyValue) overallAccuracyValue.textContent = `${accuracy}%`;
+  if (totalAttemptsValue) totalAttemptsValue.textContent = `${overallAttempts}`;
+  if (totalCorrectValue) totalCorrectValue.textContent = `${overallCorrect}`;
+  if (totalWrongValue) totalWrongValue.textContent = `${overallWrong}`;
+
+  if (performanceGrid) {
+    const disciplines = Object.entries(performanceData);
+    if (!disciplines.length) {
+      performanceGrid.innerHTML = '<p class="performance-empty">Responda algumas questões para ver seu desempenho por disciplina aqui.</p>';
+      return;
+    }
+
+    performanceGrid.innerHTML = disciplines.map(([discipline, summary]) => `
+      <article class="performance-card">
+        <div class="performance-card__header">
+          <span class="performance-card__label">${discipline}</span>
+          <span class="performance-card__score">${summary.accuracy}%</span>
+        </div>
+        <p class="performance-card__meta">Acertos ${summary.correct} • Erros ${summary.wrong}</p>
+        <div class="progress-bar">
+          <div class="progress-bar__fill" style="width:${summary.accuracy}%"></div>
+        </div>
+      </article>
+    `).join('');
+  }
+}
+
+function renderQuestion() {
+  quizFinished = false;
+  questionAnswered = false;
+
+  const question = currentQuestionSet[currentQuestionIndex];
+  const questionDiscipline = document.getElementById('questionDiscipline');
+  const questionStatement = document.getElementById('questionStatement');
+  const questionOptions = document.getElementById('questionOptions');
+  const questionFeedback = document.getElementById('questionFeedback');
+  const questionSummary = document.getElementById('questionSummary');
+  const questionResult = document.getElementById('questionResult');
+  const questionIndex = document.getElementById('questionIndex');
+  const questionTotal = document.getElementById('questionTotal');
+  const nextButton = document.getElementById('nextQuestionButton');
+
+  if (!questionDiscipline || !questionStatement || !questionOptions || !questionFeedback || !questionSummary || !questionIndex || !questionTotal || !nextButton || !questionResult) {
+    return;
+  }
+
+  questionDiscipline.textContent = currentDiscipline || 'Disciplina';
+  questionIndex.textContent = currentQuestionIndex + 1;
+  questionTotal.textContent = currentQuestionSet.length;
+  questionResult.style.display = 'none';
+
+  if (!question) {
+    questionStatement.textContent = 'Nenhuma questão disponível para esta disciplina.';
+    questionOptions.innerHTML = '';
+    questionFeedback.textContent = 'Escolha outra disciplina para começar.';
+    questionFeedback.className = 'question-feedback';
+    questionSummary.classList.remove('active');
+    nextButton.disabled = true;
+    return;
+  }
+
+  questionStatement.textContent = question.enunciado;
+  questionOptions.innerHTML = Object.entries(question.alternativas).map(([key, value]) => {
+    return `
+      <button type="button" class="question-option" data-option="${key}">
+        <span>${key}</span>
+        <span>${value}</span>
+      </button>
+    `;
+  }).join('');
+
+  questionOptions.querySelectorAll('.question-option').forEach(button => {
+    button.addEventListener('click', handleOptionClick);
+  });
+
+  questionFeedback.textContent = 'Selecione uma alternativa para conferir.';
+  questionFeedback.className = 'question-feedback';
+  questionSummary.classList.remove('active');
+  nextButton.textContent = currentQuestionIndex < currentQuestionSet.length - 1 ? 'Próxima questão' : 'Ver resultado final';
+  nextButton.disabled = true;
+  questionAnswered = false;
+}
+
+function handleOptionClick(event) {
+  if (questionAnswered || quizFinished) return;
+  const selectedButton = event.currentTarget;
+  const selectedOption = selectedButton.dataset.option;
+  if (!selectedOption) return;
+
+  processAnswer(selectedOption, selectedButton);
+}
+
+function processAnswer(selectedOption, selectedButton) {
+  const question = currentQuestionSet[currentQuestionIndex];
+  const questionFeedback = document.getElementById('questionFeedback');
+  const questionOptions = document.getElementById('questionOptions');
+  const questionSummary = document.getElementById('questionSummary');
+  const questionExplanation = document.getElementById('questionExplanation');
+  const nextButton = document.getElementById('nextQuestionButton');
+
+  if (!question || !questionFeedback || !questionOptions || !questionSummary || !questionExplanation || !nextButton) return;
+
+  questionAnswered = true;
+  const isCorrect = selectedOption === question.correta;
+
+  if (isCorrect) {
+    correctCount += 1;
+    questionFeedback.textContent = 'Resposta correta! Muito bem.';
+    questionFeedback.classList.add('correct');
+    selectedButton.classList.add('correct');
+  } else {
+    wrongCount += 1;
+    questionFeedback.textContent = `Resposta incorreta. A alternativa correta é ${question.correta}.`;
+    questionFeedback.classList.add('wrong');
+    selectedButton.classList.add('wrong');
+    const correctButton = questionOptions.querySelector(`[data-option="${question.correta}"]`);
+    correctButton?.classList.add('correct');
+  }
+
+  questionOptions.querySelectorAll('.question-option').forEach(button => {
+    button.classList.add('disabled');
+    button.disabled = true;
+  });
+
+  questionExplanation.textContent = question.explicacao;
+  questionSummary.classList.add('active');
+  nextButton.disabled = false;
+  updateScoreDisplay();
+}
+
+function updateScoreDisplay() {
+  const correctCountEl = document.getElementById('correctCount');
+  const wrongCountEl = document.getElementById('wrongCount');
+  if (correctCountEl) correctCountEl.textContent = correctCount;
+  if (wrongCountEl) wrongCountEl.textContent = wrongCount;
+}
+
+function handleNextQuestion() {
+  if (!questionAnswered && !quizFinished) return;
+
+  if (quizFinished) {
+    currentQuestionIndex = 0;
+    correctCount = 0;
+    wrongCount = 0;
+    updateScoreDisplay();
+    renderQuestionSet();
+    return;
+  }
+
+  if (currentQuestionIndex < currentQuestionSet.length - 1) {
+    currentQuestionIndex += 1;
+    renderQuestion();
+  } else {
+    showFinalResult();
+  }
+}
+
+function showFinalResult() {
+  quizFinished = true;
+  savePerformanceData(currentDiscipline, correctCount, wrongCount, currentQuestionSet.length);
+  initPerformanceDashboard();
+  const questionStatement = document.getElementById('questionStatement');
+  const questionOptions = document.getElementById('questionOptions');
+  const questionFeedback = document.getElementById('questionFeedback');
+  const questionSummary = document.getElementById('questionSummary');
+  const questionResult = document.getElementById('questionResult');
+  const nextButton = document.getElementById('nextQuestionButton');
+
+  if (!questionStatement || !questionOptions || !questionFeedback || !questionSummary || !questionResult || !nextButton) return;
+
+  questionStatement.textContent = `Você concluiu o banco de questões de ${currentDiscipline}!`;
+  questionOptions.innerHTML = '';
+  questionFeedback.textContent = '';
+  questionFeedback.className = 'question-feedback';
+  questionSummary.classList.remove('active');
+  questionResult.style.display = 'block';
+  questionResult.innerHTML = `
+    <strong>Resultado final</strong><br>
+    Você acertou <strong>${correctCount}</strong> de <strong>${currentQuestionSet.length}</strong> questões.<br>
+    Erros: <strong>${wrongCount}</strong>.<br>
+    Taxa de acerto: <strong>${Math.round((correctCount / currentQuestionSet.length) * 100)}%</strong>.
+  `;
+  nextButton.textContent = 'Reiniciar';
+  nextButton.disabled = false;
+}
+
+function resetQuiz() {
+  currentQuestionIndex = 0;
+  correctCount = 0;
+  wrongCount = 0;
+  quizFinished = false;
+  updateScoreDisplay();
+  renderQuestion();
+}
+
 const WEEK_DATA = [
   {
     day: 'SEG', num: 7, isToday: false,

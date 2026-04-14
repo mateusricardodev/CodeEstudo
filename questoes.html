@@ -69,26 +69,38 @@
         <p class="content__date">Hoje: Quinta-feira, 10 de Março de 2026</p>
         <h1 class="content__title">Banco de Questões</h1>
       </div>
-      <section class="summary-cards">
-        <article class="summary-card summary-card--primary">
-          <div class="summary-card__header"><span class="summary-card__label">Matemática</span></div>
-          <p class="summary-card__sub">Questão: Qual é o valor de x em 2x+3=11?</p>
-        </article>
-        <article class="summary-card summary-card--teal">
-          <div class="summary-card__header"><span class="summary-card__label">História</span></div>
-          <p class="summary-card__sub">Questão: Quais foram as causas da Independência do Brasil?</p>
-        </article>
-        <article class="summary-card summary-card--warm">
-          <div class="summary-card__header"><span class="summary-card__label">Biologia</span></div>
-          <p class="summary-card__sub">Questão: Qual é a função do DNA na célula?</p>
-        </article>
-        <article class="summary-card summary-card--blue">
-          <div class="summary-card__header"><span class="summary-card__label">Química</span></div>
-          <p class="summary-card__sub">Questão: O que é uma reação de oxiredução?</p>
-        </article>
-        <article class="summary-card summary-card--purple">
-          <div class="summary-card__header"><span class="summary-card__label">Redação</span></div>
-          <p class="summary-card__sub">Questão: Como elaborar uma proposta de intervenção efetiva?</p>
+
+      <section class="discipline-selection" id="disciplineSelection">
+        <div class="discipline-selection__content">
+          <div class="discipline-selection__header">
+            <h2 class="discipline-selection__title">Escolha uma disciplina</h2>
+            <p class="discipline-selection__subtitle">Selecione a matéria para começar seu quiz ENEM</p>
+          </div>
+          <div class="discipline-grid" id="disciplineGrid"></div>
+        </div>
+      </section>
+
+      <section class="question-panel" id="questionPanel" style="display:none;">
+        <div class="question-header">
+          <div class="question-topic">
+            <span class="question-discipline" id="questionDiscipline">Disciplina</span>
+            <strong class="question-title">Questão <span id="questionIndex">1</span> de <span id="questionTotal">5</span></strong>
+          </div>
+          <button type="button" class="btn-back" id="backButton" title="Voltar à seleção de disciplina"><i data-lucide="arrow-left"></i> Voltar</button>
+          <div class="question-status">Acertos <strong id="correctCount">0</strong> • Erros <strong id="wrongCount">0</strong></div>
+        </div>
+
+        <article class="question-card">
+          <p class="question-text" id="questionStatement">Carregando questão...</p>
+          <div class="question-options" id="questionOptions"></div>
+          <div class="question-feedback" id="questionFeedback">Selecione uma alternativa para conferir.</div>
+          <div class="question-summary" id="questionSummary">
+            <p class="question-explanation" id="questionExplanation"></p>
+            <div class="question-actions">
+              <button type="button" class="btn-primary" id="nextQuestionButton">Próxima questão</button>
+            </div>
+          </div>
+          <div class="question-result" id="questionResult"></div>
         </article>
       </section>
     </main>
